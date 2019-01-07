@@ -31,9 +31,12 @@ public class MIDIEncoder{
         grid[row][col] = new Tile(row, col, Hex[col]);
       }
     }
+    System.out.println(toHex());
   }
 
-  public void main(String[][] args){}
+  public static void main(String[] args){
+    new MIDIEncoder(args[0], Integer.parseInt(args[1]));
+  }
 
   private boolean addNote(){
     return false;
@@ -65,7 +68,7 @@ public class MIDIEncoder{
 
   private String toHex(){
     //Header chunk of the MIDI file
-    String output = "4D 54 68 64 00 00 00 06 00 01 00 01 00 80 4D 54 72 6B 00 00 00 ";
+    String output = "4D 54 68 64 00 00 00 06 00 01 00 01 00 80 4D 54 72 6B ";
     //length of the MIDI track
     int trackLen = 0;
     //Track information
@@ -75,14 +78,14 @@ public class MIDIEncoder{
       trackLen += 4;
       for (int row = 0; row < 13; row++){
         if (grid[row][col].getMode() != 2){
-          output2 += "91 " + grid[row][length].getVal() + " ";
+          output2 += "91 " + grid[row][col].getVal() + " ";
           if (grid[row][col].getMode() == 0) output2 += "00 ";
           else output2 += "64 ";
           trackLen += 3;
         }
       }
     }
-    return output;
+    return output += trackLen + " " + output2;
   }
 
 }
