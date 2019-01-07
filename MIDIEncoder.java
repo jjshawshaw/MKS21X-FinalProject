@@ -13,8 +13,6 @@ public class MIDIEncoder{
   private boolean complete;
   //filename to write to
   private String filename;
-  //which notes are on or off on a given beat
-  private boolean[] NotesOn;
 
   public MIDIEncoder(String filename, int length){
     this.length = length;
@@ -22,9 +20,6 @@ public class MIDIEncoder{
     currentx = 0;
     currenty = 0;
     complete = false;
-    NotesOn = new boolean[]{
-    false, false, false, false, false, false,
-    false, false, false, false, false, false, false};
     //Hex codes for notes C4 to C3 in decending order
     Hex = new String[]{
     "48", "47", "46", "45", "44", "43", "42",
@@ -58,6 +53,14 @@ public class MIDIEncoder{
 
   private boolean getFile(){
     return false;
+  }
+
+  private boolean[] notesOn(int col){
+    boolean[] NotesOn = new boolean[13];
+    for (int row = 0; row < 13; row++){
+      NotesOn[row] = (grid[row][col].getMode() != 0);
+    }
+    return NotesOn;
   }
 
   private String toHex(){
