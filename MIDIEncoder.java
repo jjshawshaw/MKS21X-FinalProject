@@ -24,7 +24,7 @@ public class MIDIEncoder{
     complete = false;
     NotesOn = new boolean[]{
     false, false, false, false, false, false,
-    false, false, false, false, false, false, false}
+    false, false, false, false, false, false, false};
     //Hex codes for notes C4 to C3 in decending order
     Hex = new String[]{
     "48", "47", "46", "45", "44", "43", "42",
@@ -62,10 +62,10 @@ public class MIDIEncoder{
 
   private String toHex(){
     //Header chunk of the MIDI file
-    String output = "
-    4D 54 68 64 00 00 00 06 00 01 00 01 00 80 4D 54 72 6B 00 00 00";
+    String output = "4D 54 68 64 00 00 00 06 00 01 00 01 00 80 4D 54 72 6B 00 00 00";
     //length of the MIDI track
     String trackLength = "00";
+    return output;
   }
 
 }
