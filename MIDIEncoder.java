@@ -88,7 +88,21 @@ public class MIDIEncoder{
     //Track end chunk
     output2 += "00 FF 2F 00";
     trackLen += 4; //TrackLen calculation will be implemented;
-    return output += trackLen + "-calculate manually " + output2;
+    String trackLenHex = Integer.toHexString(trackLen);
+    int temp = trackLen;
+    trackLen += trackLenHex.length();
+    trackLenHex = Integer.toHexString(trackLen);
+    while (temp + trackLenHex.length() != trackLen){
+      int temp2 = trackLenHex.length();
+      trackLenHex = Integer.toHexString(trackLen);
+      trackLen += temp2 - trackLenHex.length();
+    }
+    trackLenHex = "00000000".substring(0, 8 - trackLenHex.length()) + trackLenHex + " ";
+    String temp3 = "";
+    for (int i = 0; i < trackLenHex.length() - 2; i += 2){
+      temp3 += trackLenHex.substring(i, i + 2).toUpperCase() + " ";
+    }
+    return output += temp3 + output2;
   }
 
 }
