@@ -10,6 +10,10 @@ public class MIDIEncoder{
   public MIDIEncoder(String filename, int length){
     this.length = length;
     this.filename = filename;
+    grid = new Tile[12][length];
+    currentx = 0;
+    currenty = 0;
+    complete = false;
   }
 
   public void main(String[][] args){}
