@@ -1,8 +1,8 @@
 public class Tile{
 
-	int x, y;
-	String val;
-	int mode;
+	private int x, y;
+	private String val;
+	private int mode;
 
 public Tile(int x, int y, String value){
 		this.x = x;
@@ -22,6 +22,15 @@ public Tile(int x, int y, String value){
 	public void setMode(int newmode){
 		mode = newmode;
 	}
+
+	public int getX(){
+		return x;
+	}
+
+	public int getY(){
+		return y;
+	}
+
 
 
 
