@@ -1,11 +1,20 @@
 public class MIDIEncoder{
+  //grid of each beat
   private Tile[][] grid;
+  //length of the file (how many beats)
   private int length;
+  //reference string
   private String[] Hex;
+  //x value of cursor
   private int currentx;
+  //y value of cursor
   private int currenty;
+  //whether the program is complete
   private boolean complete;
+  //filename to write to
   private String filename;
+  //which notes are on or off on a given beat
+  private boolean[] NotesOn;
 
   public MIDIEncoder(String filename, int length){
     this.length = length;
@@ -13,6 +22,9 @@ public class MIDIEncoder{
     currentx = 0;
     currenty = 0;
     complete = false;
+    NotesOn = new boolean[]{
+    false, false, false, false, false, false,
+    false, false, false, false, false, false, false}
     //Hex codes for notes C4 to C3 in decending order
     Hex = new String[]{
     "48", "47", "46", "45", "44", "43", "42",
@@ -49,7 +61,11 @@ public class MIDIEncoder{
   }
 
   private String toHex(){
-    return "";
+    //Header chunk of the MIDI file
+    String output = "
+    4D 54 68 64 00 00 00 06 00 01 00 01 00 80 4D 54 72 6B 00 00 00";
+    //length of the MIDI track
+    String trackLength = "00";
   }
 
 }
