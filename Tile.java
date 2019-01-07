@@ -4,20 +4,23 @@ public class Tile{
 	String val;
 	int mode;
 
-	public Tile(x,y,value){
-
+public Tile(int x, int y, String value){
+		this.x = x;
+		this.y = y;
+		val = value;
+		mode = 0;
 	}
 
-	getMode(){
+	public int getMode(){
 		return mode;
 	}
 
-	getVal(){
+	public String getVal(){
 		return val;
 	}
 
-	setMode(int new){
-		mode = new;
+	public void setMode(int newmode){
+		mode = newmode;
 	}
 
 
