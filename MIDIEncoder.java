@@ -87,7 +87,8 @@ public class MIDIEncoder{
     }
     //Track end chunk
     output2 += "00 FF 2F 00";
-    trackLen += 4; //TrackLen calculation will be implemented;
+    trackLen += 4;
+    //TrackLen is calculated and turned to hex
     String trackLenHex = Integer.toHexString(trackLen);
     int temp = trackLen;
     trackLen += trackLenHex.length();
@@ -99,6 +100,7 @@ public class MIDIEncoder{
     }
     trackLenHex = "00000000".substring(0, 8 - trackLenHex.length()) + trackLenHex + " ";
     String temp3 = "";
+    //TrackLenHex is formatted to be consistent
     for (int i = 0; i < trackLenHex.length() - 2; i += 2){
       temp3 += trackLenHex.substring(i, i + 2).toUpperCase() + " ";
     }
