@@ -85,7 +85,10 @@ public class MIDIEncoder{
         }
       }
     }
-    return output += trackLen + " " + output2;
+    //Track end chunk
+    output2 += "00 FF 2F 00";
+    trackLen += 4; //TrackLen calculation will be implemented;
+    return output += trackLen + "-calculate manually " + output2;
   }
 
 }
