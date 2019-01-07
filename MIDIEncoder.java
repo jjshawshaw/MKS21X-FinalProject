@@ -55,19 +55,19 @@ public class MIDIEncoder{
     return false;
   }
 
-  private boolean[] notesOn(int col){
-    boolean[] NotesOn = new boolean[13];
+  private int[] getNotes(int col){
+    int[] Notes = new int[13];
     for (int row = 0; row < 13; row++){
-      NotesOn[row] = (grid[row][col].getMode() != 0);
+      Notes[row] = grid[row][col].getMode();
     }
-    return NotesOn;
+    return Notes;
   }
 
   private String toHex(){
     //Header chunk of the MIDI file
     String output = "4D 54 68 64 00 00 00 06 00 01 00 01 00 80 4D 54 72 6B 00 00 00";
     //length of the MIDI track
-    String trackLength = "00";
+    int trackLength = 0;
     return output;
   }
 
