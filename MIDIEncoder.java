@@ -65,9 +65,23 @@ public class MIDIEncoder{
 
   private String toHex(){
     //Header chunk of the MIDI file
-    String output = "4D 54 68 64 00 00 00 06 00 01 00 01 00 80 4D 54 72 6B 00 00 00";
+    String output = "4D 54 68 64 00 00 00 06 00 01 00 01 00 80 4D 54 72 6B 00 00 00 ";
     //length of the MIDI track
-    int trackLength = 0;
+    int trackLen = 0;
+    //Track information
+    String output2 = "";
+    for (int col = 0; col < length; col++){
+      output2 += "80 18 ";
+      trackLen += 4;
+      for (int row = 0; row < 13; row++){
+        if (grid[row][col].getMode() != 2){
+          output2 += "91 " + grid[row][length].getVal() + " ";
+          if (grid[row][col].getMode() == 0) output2 += "00 ";
+          else output2 += "64 ";
+          trackLen += 3;
+        }
+      }
+    }
     return output;
   }
 
