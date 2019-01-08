@@ -45,14 +45,30 @@ public class MIDIEncoder{
         grid[row][col] = new Tile(row, col, Hex[col]);
       }
     }
-    System.out.println(toHex());
+    //will run lanterna functions to get user input and modify the grid
+    while (!(complete)){
+      Key key = terminal.readInput();
+      if key
+
+    }
   }
 
   public static void main(String[] args){
+    Terminal terminal = TerminalFacade.createTextTerminal();
+    terminal.enterPrivateMode();
+
+    TerminalSize size = terminal.getTerminalSize();
+    terminal.setCursorVisible(false);
+
     new MIDIEncoder(args[0], Integer.parseInt(args[1]));
+
+
+
+
   }
 
   private boolean addNote(){
+
     return false;
   }
 
