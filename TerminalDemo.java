@@ -22,6 +22,8 @@ public class TerminalDemo {
 	//y value of cursor
 	private static int currenty;
 
+	private static boolean note;
+
   public static void putString(int r, int c,Terminal t, String s){
     t.moveCursor(r,c);
     for(int i = 0; i < s.length();i++){
@@ -54,6 +56,7 @@ public class TerminalDemo {
     currentx = 16;
     currenty = 5;
     int mode = 0;
+		note = false;
 
     while(running){
       Key key = terminal.readInput();
@@ -84,6 +87,15 @@ public class TerminalDemo {
                       terminal.clearScreen();
                       hasLoaded = false;
               }
+							if (key.getKind() == Key.Kind.Enter && (!note)){
+			          note = true;
+			        }
+
+							int i = 0;
+							while(note && (i < 50)){
+									putString(currentx,currenty,terminal, "C ",Terminal.Color.BLUE,Terminal.Color.BLUE,Terminal.Color.RED);
+									i++;
+							}
 
               if(mode == 0 && hasLoaded){
                       if(key.getKind() == Key.Kind.Backspace) {
@@ -108,25 +120,30 @@ public class TerminalDemo {
               if(!hasLoaded) {
 				putString(0,0,terminal, "AAAAAAAAAAAAAAAAAAAAAAAAAAWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",Terminal.Color.RED,Terminal.Color.RED,Terminal.Color.RED);
 
-				putString(1,5,terminal, "C",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(1,6,terminal, "B",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(1,7,terminal, "A#",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(1,8,terminal, "A",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(1,9,terminal, "G#",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(1,10,terminal, "G",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(1,11,terminal, "F#",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(1,12,terminal, "F",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(1,13,terminal, "E",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(1,14,terminal, "D#",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(1,15,terminal, "D",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(1,16,terminal, "C#",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(1,17,terminal, "C",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,5,terminal, "C ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,6,terminal, "B ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,7,terminal, "A#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+				putString(1,8,terminal, "A ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,9,terminal, "G#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+				putString(1,10,terminal, "G ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,11,terminal, "F#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+				putString(1,12,terminal, "F ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,13,terminal, "E ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,14,terminal, "D#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+				putString(1,15,terminal, "D ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,16,terminal, "C#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+				putString(1,17,terminal, "C ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
                                 putString(1,3,terminal, "currentx: "+ currentx,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
                                 putString(15,3,terminal, "currenty: "+ currenty,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
+																putString(35,3,terminal, "note: "+ note,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
               }
               putString(currentx,currenty,terminal,"^",Terminal.Color.BLUE, Terminal.Color.WHITE, Terminal.Color.GREEN);
 
-        hasLoaded = true;
+
+
+
+
+				hasLoaded = true;
               }
       }
       if(mode == 1) {
