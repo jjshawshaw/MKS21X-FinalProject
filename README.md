@@ -9,3 +9,4 @@ We were both quite sick so no work was done on this day.
 
 01.05.19
 
+01.09.19 Began working on the lanterna aspect of the project. Though we have yet to implement anything into the actula project, we began testing on a tester file attempting to develop the visual grid independently of the encoder class. 
