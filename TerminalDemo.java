@@ -12,6 +12,8 @@ import com.googlecode.lanterna.input.InputDecoder;
 import com.googlecode.lanterna.input.InputProvider;
 import com.googlecode.lanterna.input.Key;
 import com.googlecode.lanterna.input.KeyMappingProfile;
+import com.googlecode.lanterna.screen.Screen;
+
 
 
 public class TerminalDemo {
@@ -45,58 +47,65 @@ public class TerminalDemo {
     terminal.enterPrivateMode();
 
     TerminalSize size = terminal.getTerminalSize();
-    terminal.setCursorVisible(false);
+    terminal.setCursorVisible(true);
 
     boolean running = true;
+    boolean hasLoaded = false;
+    currentx = 16;
+    currenty = 5;
     int mode = 0;
-    long lastTime =  System.currentTimeMillis();
-    long currentTime = lastTime;
-    long timer = 0;
-
 
     while(running){
       Key key = terminal.readInput();
       if (key != null)
       {
 
-        //YOU CAN PUT DIFFERENT SETS OF BUTTONS FOR DIFFERENT MODES!!!
+              if (key.getKind() == Key.Kind.Escape) {
+                      terminal.exitPrivateMode();
+                      running = false;
+              }
+              if (key.getKind() == Key.Kind.ArrowUp){
+                      if (currenty > 0) currenty--;
+                      terminal.clearScreen();
+                      hasLoaded = false;
+              }
+              if (key.getKind() == Key.Kind.ArrowDown){
+                      if (currenty < 18) currenty++;
+                      terminal.clearScreen();
+                      hasLoaded = false;
+              }
+              if (key.getKind() == Key.Kind.ArrowRight){
+                      if (currentx < 80) currentx++;
+                      terminal.clearScreen();
+                      hasLoaded = false;
+              }
+              if (key.getKind() == Key.Kind.ArrowLeft){
+                      if (currentx > 0)currentx--;
+                      terminal.clearScreen();
+                      hasLoaded = false;
+              }
 
-        //only for the game mode.
-        if(mode == 0){
-          if (key.getKind() == Key.Kind.Escape) {
-            terminal.exitPrivateMode();
-            running = false;
-          }
-					if (key.getKind() == Key.Kind.ArrowUp){
-		        currenty++;
-		      }
-		      if (key.getKind() == Key.Kind.ArrowDown){
-		        currenty--;
-		      }
-		      if (key.getKind() == Key.Kind.ArrowRight){
-		        currentx++;
-		      }
-		      if (key.getKind() == Key.Kind.ArrowLeft){
-		        currentx--;
-		      }
-        }
+              if(mode == 0 && hasLoaded){
+                      if(key.getKind() == Key.Kind.Backspace) {
+                              mode = 1;
+                              hasLoaded = false;
+                                terminal.clearScreen();
+                      }
+              }
+              if(mode == 1 && hasLoaded) {
+                      if(key.getKind() == Key.Kind.Backspace) {
+                              mode = 0;
+                              hasLoaded = false;
+                                terminal.clearScreen();
+                      }
 
-        //for all modes
-        if (key.getCharacter() == ' ') {
-          mode++;
-          mode%=2;//2 modes
-          terminal.clearScreen();
-          lastTime = System.currentTimeMillis();
-          currentTime = System.currentTimeMillis();
-        }
+              }
       }
 
-      terminal.applySGR(Terminal.SGR.ENTER_BOLD);
-      putString(1,1,terminal, "This is mode "+mode,Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
-      terminal.applySGR(Terminal.SGR.RESET_ALL);
 
 
       if(mode==0){
+              if(!hasLoaded) {
 				putString(0,0,terminal, "AAAAAAAAAAAAAAAAAAAAAAAAAAWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",Terminal.Color.RED,Terminal.Color.RED,Terminal.Color.RED);
 
 				putString(1,5,terminal, "C",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
@@ -112,20 +121,21 @@ public class TerminalDemo {
 				putString(1,15,terminal, "D",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
 				putString(1,16,terminal, "C#",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
 				putString(1,17,terminal, "C",Terminal.Color.BLUE,Terminal.Color.WHITE,Terminal.Color.RED);
+                                putString(1,3,terminal, "currentx: "+ currentx,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
+                                putString(15,3,terminal, "currenty: "+ currenty,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
+              }
+              putString(currentx,currenty,terminal,"^",Terminal.Color.BLUE, Terminal.Color.WHITE, Terminal.Color.GREEN);
 
-        putString(1,3,terminal, "currentx: "+currentx,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
-        putString(15,3,terminal, "currenty: "+currenty,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
-
-      }else{
-
-        terminal.applySGR(Terminal.SGR.ENTER_BOLD,Terminal.SGR.ENTER_BLINK);
+        hasLoaded = true;
+              }
+      }
+      if(mode == 1) {
+              if(!hasLoaded) {
         putString(1,3,terminal, "Not game, just a pause!",Terminal.Color.BLUE,Terminal.Color.RED,Terminal.Color.WHITE);
-        terminal.applySGR(Terminal.SGR.RESET_ALL);
-
+                hasLoaded = true;
+              }
       }
 
-    }
-
-
   }
+
 }

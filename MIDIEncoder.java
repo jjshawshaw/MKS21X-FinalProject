@@ -24,7 +24,7 @@ public class MIDIEncoder{
   //y value of cursor
   private static int currenty;
   //whether the program is complete
-  private static boolean complete;
+  private boolean complete;
   //filename to write to
   private String filename;
 
