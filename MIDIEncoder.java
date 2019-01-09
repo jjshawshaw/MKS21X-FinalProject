@@ -1,16 +1,9 @@
-import com.googlecode.lanterna.terminal.Terminal.SGR;
-import com.googlecode.lanterna.TerminalFacade;
-import com.googlecode.lanterna.input.Key;
-import com.googlecode.lanterna.input.Key.Kind;
-import com.googlecode.lanterna.terminal.Terminal;
-import com.googlecode.lanterna.terminal.Terminal.Color;
-import com.googlecode.lanterna.terminal.TerminalSize;
-import com.googlecode.lanterna.LanternaException;
-import com.googlecode.lanterna.input.CharacterPattern;
-import com.googlecode.lanterna.input.InputDecoder;
-import com.googlecode.lanterna.input.InputProvider;
-import com.googlecode.lanterna.input.Key;
-import com.googlecode.lanterna.input.KeyMappingProfile;
+import com.googlecode.lanterna.*;
+import com.googlecode.lanterna.input.*;
+import com.googlecode.lanterna.terminal.*;
+import com.googlecode.lanterna.screen.*;
+import java.io.IOException;
+import java.awt.Color;
 
 public class MIDIEncoder{
   //grid of each beat
@@ -20,11 +13,11 @@ public class MIDIEncoder{
   //reference string
   private String[] Hex;
   //x value of cursor
-  private int currentx;
+  private static int currentx;
   //y value of cursor
-  private int currenty;
+  private static int currenty;
   //whether the program is complete
-  private boolean complete;
+  private static boolean complete;
   //filename to write to
   private String filename;
 
@@ -46,11 +39,6 @@ public class MIDIEncoder{
       }
     }
     //will run lanterna functions to get user input and modify the grid
-    while (!(complete)){
-      Key key = terminal.readInput();
-      if key
-
-    }
   }
 
   public static void main(String[] args){
@@ -62,10 +50,43 @@ public class MIDIEncoder{
 
     new MIDIEncoder(args[0], Integer.parseInt(args[1]));
 
-
+    while(!(complete)){
+      Key key = terminal.readInput();
+      if (key.getKind() == Key.Kind.ArrowDown){
+        currenty--;
+      }
+      if (key.getKind() == Key.Kind.ArrowUp){
+        currenty++;
+      }
+      if (key.getKind() == Key.Kind.ArrowRight){
+        currentx++;
+      }
+      if (key.getKind() == Key.Kind.ArrowLeft){
+        currentx--;
+      }
+      if (key.getKind() == Key.Kind.Escape) {
+           terminal.exitPrivateMode();
+           complete = true;
+         }
+      putString(1,3,terminal, "current x: "+currentx,Terminal.Color.WHITE,Terminal.Color.RED);
+      putString(3,5,terminal, "current y: "+currenty,Terminal.Color.WHITE,Terminal.Color.RED);
+    }
 
 
   }
+  public static void putString(int r, int c,Terminal t,
+        String s, Terminal.Color forg, Terminal.Color back ){
+    t.moveCursor(r,c);
+    t.applyBackgroundColor(forg);
+    t.applyForegroundColor(Terminal.Color.BLACK);
+
+    for(int i = 0; i < s.length();i++){
+      t.putCharacter(s.charAt(i));
+    }
+    t.applyBackgroundColor(Terminal.Color.DEFAULT);
+    t.applyForegroundColor(Terminal.Color.DEFAULT);
+  }
+ 
 
   private boolean addNote(){
 
