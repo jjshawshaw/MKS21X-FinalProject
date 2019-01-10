@@ -24,9 +24,11 @@ public class MIDIEncoder{
   //y value of cursor
   private static int currenty;
   //whether the program is complete
-  private boolean complete;
+  private static boolean complete;
   //filename to write to
   private String filename;
+
+  private static boolean note;
 
   public MIDIEncoder(String filename, int length){
     this.length = length;
@@ -50,40 +52,132 @@ public class MIDIEncoder{
   }
 
   public static void main(String[] args){
+
+    new MIDIEncoder(args[0], Integer.parseInt(args[1]));
+
     Terminal terminal = TerminalFacade.createTextTerminal();
     terminal.enterPrivateMode();
 
     TerminalSize size = terminal.getTerminalSize();
-    terminal.setCursorVisible(false);
+    terminal.setCursorVisible(true);
 
-    new MIDIEncoder(args[0], Integer.parseInt(args[1]));
+    boolean running = true;
+    boolean hasLoaded = false;
+    currentx = 16;
+    currenty = 5;
+    int mode = 0;
+		note = false;
 
-    while (!(complete)){
+    while(!(complete)){
       Key key = terminal.readInput();
-      if (key.getKind() == Key.Kind.ArrowUp){
-        currenty++;
-      }
-      if (key.getKind() == Key.Kind.ArrowDown){
-        currenty--;
-      }
-      if (key.getKind() == Key.Kind.ArrowRight){
-        currentx++;
-      }
-      if (key.getKind() == Key.Kind.ArrowLeft){
-        currentx--;
-      }
-      if (key.getKind() == Key.Kind.Escape) {
-        terminal.exitPrivateMode();
-        complete = true;
+      if (key != null)
+      {
+
+              if (key.getKind() == Key.Kind.Escape) {
+                      terminal.exitPrivateMode();
+                      running = false;
+              }
+              if (key.getKind() == Key.Kind.ArrowUp){
+                      if (currenty > 0) currenty--;
+                      terminal.clearScreen();
+                      hasLoaded = false;
+              }
+              if (key.getKind() == Key.Kind.ArrowDown){
+                      if (currenty < 18) currenty++;
+                      terminal.clearScreen();
+                      hasLoaded = false;
+              }
+              if (key.getKind() == Key.Kind.ArrowRight){
+                      if (currentx < 80) currentx++;
+                      terminal.clearScreen();
+                      hasLoaded = false;
+              }
+              if (key.getKind() == Key.Kind.ArrowLeft){
+                      if (currentx > 0)currentx--;
+                      terminal.clearScreen();
+                      hasLoaded = false;
+              }
+							if (key.getKind() == Key.Kind.Enter && (!note)){
+			          note = true;
+			        }
+
+							int i = 0;
+							while(note && (i < 50)){
+									putString(currentx,currenty,terminal, "C ",Terminal.Color.BLUE,Terminal.Color.BLUE,Terminal.Color.RED);
+									i++;
+							}
+
+              if(mode == 0 && hasLoaded){
+                      if(key.getKind() == Key.Kind.Backspace) {
+                              mode = 1;
+                              hasLoaded = false;
+                                terminal.clearScreen();
+                      }
+              }
+              if(mode == 1 && hasLoaded) {
+                      if(key.getKind() == Key.Kind.Backspace) {
+                              mode = 0;
+                              hasLoaded = false;
+                                terminal.clearScreen();
+                      }
+
+              }
       }
 
-      System.out.println("current x: "+currentx);
-      System.out.println("current y: "+currenty);
 
+
+      if(mode==0){
+              if(!hasLoaded) {
+				putString(0,0,terminal, "AAAAAAAAAAAAAAAAAAAAAAAAAAWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",Terminal.Color.RED,Terminal.Color.RED,Terminal.Color.RED);
+
+				putString(1,5,terminal, "C ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,6,terminal, "B ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,7,terminal, "A#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+				putString(1,8,terminal, "A ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,9,terminal, "G#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+				putString(1,10,terminal, "G ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,11,terminal, "F#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+				putString(1,12,terminal, "F ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,13,terminal, "E ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,14,terminal, "D#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+				putString(1,15,terminal, "D ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(1,16,terminal, "C#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+				putString(1,17,terminal, "C ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+                                putString(1,3,terminal, "currentx: "+ currentx,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
+                                putString(15,3,terminal, "currenty: "+ currenty,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
+																putString(35,3,terminal, "note: "+ note,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
+              }
+              putString(currentx,currenty,terminal,"^",Terminal.Color.BLUE, Terminal.Color.WHITE, Terminal.Color.GREEN);
+
+
+
+
+
+				hasLoaded = true;
+              }
+      }
+      if(mode == 1) {
+              if(!hasLoaded) {
+        putString(1,3,terminal, "Not game, just a pause!",Terminal.Color.BLUE,Terminal.Color.RED,Terminal.Color.WHITE);
+                hasLoaded = true;
+              }
+      }
+
+
+
+  }
+
+  public static void putString(int r, int c,Terminal t,
+        String s, Terminal.Color text, Terminal.Color forg, Terminal.Color back ){
+    t.moveCursor(r,c);
+    t.applyBackgroundColor(forg);
+    t.applyForegroundColor(text);
+
+    for(int i = 0; i < s.length();i++){
+      t.putCharacter(s.charAt(i));
     }
-
-
-
+    t.applyBackgroundColor(Terminal.Color.DEFAULT);
+    t.applyForegroundColor(Terminal.Color.DEFAULT);
   }
 
   private boolean addNote(){
