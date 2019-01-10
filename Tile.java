@@ -4,7 +4,7 @@ public class Tile{
 	private String val;
 	private int mode;
 
-public Tile(int x, int y, String value){
+	public Tile(int x, int y, String value){
 		this.x = x;
 		this.y = y;
 		val = value;
