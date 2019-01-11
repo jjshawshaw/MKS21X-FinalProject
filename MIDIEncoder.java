@@ -174,9 +174,6 @@ public class MIDIEncoder{
                 hasLoaded = true;
               }
       }
-
-
-
   }
 
   public static void putString(int r, int c,Terminal t,
@@ -192,9 +189,18 @@ public class MIDIEncoder{
     t.applyForegroundColor(Terminal.Color.DEFAULT);
   }
 
-  private boolean addNote(){
+  private boolean addNote(int mode){
+    if ((mode < 3) && (mode >= 0)){
+      currentTile().setMode(mode);
+      return true;
+    }else{
+      return false;
+    }
 
-    return false;
+  }
+
+  private Tile currentTile(){
+    return grid[currentx-5][currenty-5];
   }
 
   private boolean removeNote(){
