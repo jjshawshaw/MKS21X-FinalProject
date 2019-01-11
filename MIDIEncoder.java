@@ -59,7 +59,7 @@ public class MIDIEncoder{
     terminal.enterPrivateMode();
 
     TerminalSize size = terminal.getTerminalSize();
-    terminal.setCursorVisible(true);
+    terminal.setCursorVisible(false);
 
     boolean running = true;
     boolean hasLoaded = false;
@@ -75,7 +75,7 @@ public class MIDIEncoder{
 
               if (key.getKind() == Key.Kind.Escape) {
                       note=false;
-                      terminal.setCursorVisible(false);
+                      //terminal.setCursorVisible(false);
                       terminal.exitPrivateMode();
                       complete = true;
               }
@@ -99,14 +99,19 @@ public class MIDIEncoder{
                       terminal.clearScreen();
                       hasLoaded = false;
               }
-							if (key.getKind() == Key.Kind.Enter && (!note)){
+							if (key.getCharacter() == 's' && (!note)){
 			          note = true;
 			        }
 
+              if (key.getCharacter() == 'e' && note){
+			          note = false;
+			        }
+
 							int i = 0;
-							while(note && (i < 50)){
-									putString(currentx,currenty,terminal, "C ",Terminal.Color.BLUE,Terminal.Color.BLUE,Terminal.Color.RED);
-									i++;
+							if(note){
+                terminal.applyBackgroundColor(Terminal.Color.BLUE);
+                terminal.applyForegroundColor(Terminal.Color.BLUE);
+                terminal.putCharacter('A');
 							}
 
               if(mode == 0 && hasLoaded){
@@ -152,9 +157,9 @@ public class MIDIEncoder{
 				putString(0,17,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
                                 putString(1,3,terminal, "currentx: "+ currentx,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
                                 putString(15,3,terminal, "currenty: "+ currenty,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
-																putString(35,3,terminal, "note: "+ note,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
+																putString(30,3,terminal, "note: "+ note,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
               }
-              putString(currentx,currenty,terminal,"^",Terminal.Color.BLUE, Terminal.Color.WHITE, Terminal.Color.GREEN);
+              putString(currentx,currenty,terminal,"^",Terminal.Color.WHITE, Terminal.Color.WHITE, Terminal.Color.GREEN);
 
 
 
