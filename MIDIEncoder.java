@@ -111,7 +111,7 @@ public class MIDIEncoder{
 			          addNote(1);
                 int a = currentx;
                 int b = currenty;
-                putString(a,b,terminal, "  ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
+                //putString(a,b,terminal, "  ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
 			        }
 
 							int i = 0;
@@ -168,7 +168,11 @@ public class MIDIEncoder{
                                 putString(45,3,terminal, "mode: "+ currentTile().getMode(),Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
               }
               putString(currentx,currenty,terminal,"^",Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, Terminal.Color.GREEN);
-
+              for (int row = 0; row < 13; row++){
+                for (int col = 0; col < (Integer.parseInt(args[1])); col++){
+                  if (grid[row][col].getMode() == 1) putString(col + 5, row + 5,terminal, " ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
+                }
+              }
 
 
 
