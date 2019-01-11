@@ -107,7 +107,7 @@ public class MIDIEncoder{
 			          note = false;
 			        }
 
-              if (key.getCharacter() == 'a' && (!note)){
+              if (key.getCharacter() == 'a'){
 			          addNote(1);
                 putString(currentx,currenty,terminal, "  ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
 			        }
