@@ -80,12 +80,12 @@ public class MIDIEncoder{
                       complete = true;
               }
               if (key.getKind() == Key.Kind.ArrowUp){
-                      if (currenty > 0) currenty--;
+                      if (currenty > 5)  currenty--;
                       terminal.clearScreen();
                       hasLoaded = false;
               }
               if (key.getKind() == Key.Kind.ArrowDown){
-                      if (currenty < 18) currenty++;
+                      if (currenty < 17) currenty++;
                       terminal.clearScreen();
                       hasLoaded = false;
               }
@@ -95,7 +95,7 @@ public class MIDIEncoder{
                       hasLoaded = false;
               }
               if (key.getKind() == Key.Kind.ArrowLeft){
-                      if (currentx > 0)currentx--;
+                      if (currentx > 5)currentx--;
                       terminal.clearScreen();
                       hasLoaded = false;
               }
