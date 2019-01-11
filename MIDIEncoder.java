@@ -14,7 +14,7 @@ import com.googlecode.lanterna.input.KeyMappingProfile;
 
 public class MIDIEncoder{
   //grid of each beat
-  private Tile[][] grid;
+  private static Tile[][] grid;
   //length of the file (how many beats)
   private int length;
   //reference string
@@ -44,7 +44,7 @@ public class MIDIEncoder{
     grid = new Tile[13][length];
     for (int row = 0; row < 13; row++){
       for (int col = 0; col < length; col++){
-        grid[row][col] = new Tile(row, col, Hex[col]);
+        grid[row][col] = new Tile(row, col, Hex[row]);
       }
     }
     //will run lanterna functions to get user input and modify the grid
@@ -90,7 +90,7 @@ public class MIDIEncoder{
                       hasLoaded = false;
               }
               if (key.getKind() == Key.Kind.ArrowRight){
-                      if (currentx < 80) currentx++;
+                      if (currentx < Integer.parseInt(args[1])) currentx++;
                       terminal.clearScreen();
                       hasLoaded = false;
               }
@@ -105,6 +105,11 @@ public class MIDIEncoder{
 
               if (key.getCharacter() == 'e' && note){
 			          note = false;
+			        }
+
+              if (key.getCharacter() == 'a' && (!note)){
+			          addNote(1);
+                putString(currentx,currenty,terminal, "  ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
 			        }
 
 							int i = 0;
@@ -158,8 +163,9 @@ public class MIDIEncoder{
                                 putString(1,3,terminal, "currentx: "+ currentx,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
                                 putString(15,3,terminal, "currenty: "+ currenty,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
 																putString(30,3,terminal, "note: "+ note,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
+                                putString(45,3,terminal, "mode: "+ currentTile().getMode(),Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
               }
-              putString(currentx,currenty,terminal,"^",Terminal.Color.WHITE, Terminal.Color.WHITE, Terminal.Color.GREEN);
+              putString(currentx,currenty,terminal,"^",Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, Terminal.Color.GREEN);
 
 
 
@@ -189,7 +195,7 @@ public class MIDIEncoder{
     t.applyForegroundColor(Terminal.Color.DEFAULT);
   }
 
-  private boolean addNote(int mode){
+  private static boolean addNote(int mode){
     if ((mode < 2) && (mode >= 0)){
       currentTile().setMode(mode);
       return true;
@@ -199,7 +205,7 @@ public class MIDIEncoder{
 
   }
 
-  private Tile currentTile(){
+  private static Tile currentTile(){
     return grid[currentx-5][currenty-5];
   }
 
