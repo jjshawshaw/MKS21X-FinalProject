@@ -190,7 +190,7 @@ public class MIDIEncoder{
   }
 
   private boolean addNote(int mode){
-    if ((mode < 3) && (mode >= 0)){
+    if ((mode < 2) && (mode >= 0)){
       currentTile().setMode(mode);
       return true;
     }else{
