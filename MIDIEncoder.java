@@ -90,7 +90,7 @@ public class MIDIEncoder{
                       hasLoaded = false;
               }
               if (key.getKind() == Key.Kind.ArrowRight){
-                      if (currentx < Integer.parseInt(args[1])) currentx++;
+                      if (currentx < (Integer.parseInt(args[1]) +5)) currentx++;
                       terminal.clearScreen();
                       hasLoaded = false;
               }
@@ -109,7 +109,9 @@ public class MIDIEncoder{
 
               if (key.getCharacter() == 'a'){
 			          addNote(1);
-                putString(currentx,currenty,terminal, "  ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
+                int a = currentx;
+                int b = currenty;
+                putString(a,b,terminal, "  ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
 			        }
 
 							int i = 0;
