@@ -204,7 +204,12 @@ public class MIDIEncoder{
   }
 
   private boolean removeNote(){
-    return false;
+    if(currentTile().getMode() != 0){
+      currentTile().setMode(0);
+      return true;
+    }else{
+      return false;
+    }
   }
 
   private boolean changeCurrent(int newmode){
