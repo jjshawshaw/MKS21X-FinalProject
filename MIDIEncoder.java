@@ -58,9 +58,10 @@ public class MIDIEncoder{
       {
 
               if (key.getKind() == Key.Kind.Escape) {
-                      note=false;
                       //terminal.setCursorVisible(false);
+
                       terminal.exitPrivateMode();
+                      System.out.println(toHex());
                       complete = true;
               }
               if (key.getKind() == Key.Kind.ArrowUp){
