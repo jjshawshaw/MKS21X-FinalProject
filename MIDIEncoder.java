@@ -63,7 +63,7 @@ public class MIDIEncoder{
 
     boolean running = true;
     boolean hasLoaded = false;
-    currentx = 16;
+    currentx = 5;
     currenty = 5;
     int mode = 0;
 		note = false;
@@ -90,7 +90,7 @@ public class MIDIEncoder{
                       hasLoaded = false;
               }
               if (key.getKind() == Key.Kind.ArrowRight){
-                      if (currentx < (Integer.parseInt(args[1]) +5)) currentx++;
+                      if (currentx < (Integer.parseInt(args[1]) +4)) currentx++;
                       terminal.clearScreen();
                       hasLoaded = false;
               }
@@ -208,7 +208,7 @@ public class MIDIEncoder{
   }
 
   private static Tile currentTile(){
-    return grid[currentx-5][currenty-5];
+    return grid[currenty-5][currentx-5];
   }
 
   private boolean removeNote(){
