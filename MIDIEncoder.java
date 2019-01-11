@@ -17,14 +17,12 @@ public class MIDIEncoder{
   private static Tile[][] grid;
   //length of the file (how many beats)
   private int length;
-  //reference string
-  private String[] Hex;
   //x value of cursor
-  private static int currentx;
+  private int currentx;
   //y value of cursor
-  private static int currenty;
+  private int currenty;
   //whether the program is complete
-  private static boolean complete;
+  private boolean complete;
   //filename to write to
   private String filename;
 
@@ -33,11 +31,11 @@ public class MIDIEncoder{
   public MIDIEncoder(String filename, int length){
     this.length = length;
     this.filename = filename;
-    currentx = 0;
-    currenty = 0;
+    currentx = 5;
+    currenty = 5;
     complete = false;
     //Hex codes for notes C4 to C3 in decending order
-    Hex = new String[]{
+    String[] Hex = new String[]{
     "48", "47", "46", "45", "44", "43", "42",
     "41", "40", "3F", "3E", "3D", "3C"};
     //Sets up grid
@@ -48,26 +46,12 @@ public class MIDIEncoder{
       }
     }
     //will run lanterna functions to get user input and modify the grid
-
-  }
-
-  public static void main(String[] args){
-
-    new MIDIEncoder(args[0], Integer.parseInt(args[1]));
-
     Terminal terminal = TerminalFacade.createTextTerminal();
     terminal.enterPrivateMode();
-
     TerminalSize size = terminal.getTerminalSize();
     terminal.setCursorVisible(false);
-
-    boolean running = true;
     boolean hasLoaded = false;
-    currentx = 5;
-    currenty = 5;
     int mode = 0;
-		note = false;
-
     while(!(complete)){
       Key key = terminal.readInput();
       if (key != null)
@@ -90,7 +74,7 @@ public class MIDIEncoder{
                       hasLoaded = false;
               }
               if (key.getKind() == Key.Kind.ArrowRight){
-                      if (currentx < (Integer.parseInt(args[1]) +4)) currentx++;
+                      if (currentx < (length +4)) currentx++;
                       terminal.clearScreen();
                       hasLoaded = false;
               }
@@ -99,13 +83,6 @@ public class MIDIEncoder{
                       terminal.clearScreen();
                       hasLoaded = false;
               }
-							if (key.getCharacter() == 's' && (!note)){
-			          note = true;
-			        }
-
-              if (key.getCharacter() == 'e' && note){
-			          note = false;
-			        }
 
               if (key.getCharacter() == 'a'){
 			          addNote(1);
@@ -113,13 +90,6 @@ public class MIDIEncoder{
                 int b = currenty;
                 //putString(a,b,terminal, "  ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
 			        }
-
-							int i = 0;
-							if(note){
-                terminal.applyBackgroundColor(Terminal.Color.BLUE);
-                terminal.applyForegroundColor(Terminal.Color.BLUE);
-                terminal.putCharacter('A');
-							}
 
               if(mode == 0 && hasLoaded){
                       if(key.getKind() == Key.Kind.Backspace) {
@@ -162,33 +132,39 @@ public class MIDIEncoder{
 				putString(0,16,terminal, "C#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
         putString(2,16,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
 				putString(0,17,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-                                putString(1,3,terminal, "currentx: "+ currentx,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
-                                putString(15,3,terminal, "currenty: "+ currenty,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
-																putString(30,3,terminal, "note: "+ note,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
-                                putString(45,3,terminal, "mode: "+ currentTile().getMode(),Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
-              }
-              putString(currentx,currenty,terminal,"^",Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, Terminal.Color.GREEN);
+        putString(1,3,terminal, "currentx: "+ currentx,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
+        putString(15,3,terminal, "currenty: "+ currenty,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
+				putString(30,3,terminal, "note: "+ note,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
+        putString(45,3,terminal, "mode: "+ currentTile().getMode(),Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
+        putString(currentx,currenty,terminal,"^",Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, Terminal.Color.GREEN);
               for (int row = 0; row < 13; row++){
-                for (int col = 0; col < (Integer.parseInt(args[1])); col++){
+                for (int col = 0; col < (length); col++){
                   if (grid[row][col].getMode() == 1) putString(col + 5, row + 5,terminal, " ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
                 }
               }
+            }
 
 
 
 
 				hasLoaded = true;
               }
+
       }
-      if(mode == 1) {
-              if(!hasLoaded) {
-                putString(1,3,terminal, "Not game, just a pause!",Terminal.Color.BLUE,Terminal.Color.RED,Terminal.Color.WHITE);
-                hasLoaded = true;
-              }
-      }
+
   }
 
-  public static void putString(int r, int c,Terminal t,
+  public static void main(String[] args){
+
+    MIDIEncoder M = new MIDIEncoder(args[0], Integer.parseInt(args[1]));
+
+
+
+
+
+  }
+
+  public void putString(int r, int c,Terminal t,
         String s, Terminal.Color text, Terminal.Color forg, Terminal.Color back ){
     t.moveCursor(r,c);
     t.applyBackgroundColor(forg);
@@ -201,7 +177,7 @@ public class MIDIEncoder{
     t.applyForegroundColor(Terminal.Color.DEFAULT);
   }
 
-  private static boolean addNote(int mode){
+  private boolean addNote(int mode){
     if ((mode < 2) && (mode >= 0)){
       currentTile().setMode(mode);
       return true;
@@ -211,7 +187,7 @@ public class MIDIEncoder{
 
   }
 
-  private static Tile currentTile(){
+  private Tile currentTile(){
     return grid[currenty-5][currentx-5];
   }
 
