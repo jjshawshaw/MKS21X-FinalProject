@@ -26,7 +26,18 @@ public class MIDIEncoder{
   //filename to write to
   private String filename;
 
-  private static boolean note;
+  private boolean adding;
+
+  private Terminal terminal;
+
+  private boolean hasLoaded;
+
+  private int mode;
+
+  private boolean note;
+
+  boolean firstNote;
+
 
   public MIDIEncoder(String filename, int length){
     this.length = length;
@@ -46,12 +57,14 @@ public class MIDIEncoder{
       }
     }
     //will run lanterna functions to get user input and modify the grid
-    Terminal terminal = TerminalFacade.createTextTerminal();
+    terminal = TerminalFacade.createTextTerminal();
     terminal.enterPrivateMode();
     TerminalSize size = terminal.getTerminalSize();
     terminal.setCursorVisible(false);
-    boolean hasLoaded = false;
-    int mode = 0;
+    hasLoaded = false;
+    mode = 0;
+    adding = false;
+    firstNote = true;
     while(!(complete)){
       Key key = terminal.readInput();
       if (key != null)
@@ -65,12 +78,12 @@ public class MIDIEncoder{
                       complete = true;
               }
               if (key.getKind() == Key.Kind.ArrowUp){
-                      if (currenty > 5)  currenty--;
+                      if (currenty > 5 && !adding)  currenty--;
                       terminal.clearScreen();
                       hasLoaded = false;
               }
               if (key.getKind() == Key.Kind.ArrowDown){
-                      if (currenty < 17) currenty++;
+                      if (currenty < 17 && !adding) currenty++;
                       terminal.clearScreen();
                       hasLoaded = false;
               }
@@ -80,17 +93,34 @@ public class MIDIEncoder{
                       hasLoaded = false;
               }
               if (key.getKind() == Key.Kind.ArrowLeft){
-                      if (currentx > 5)currentx--;
+                      if (currentx > 5  && !adding) currentx--;
                       terminal.clearScreen();
                       hasLoaded = false;
               }
 
               if (key.getCharacter() == 'a'){
-			          addNote(1);
-                int a = currentx;
-                int b = currenty;
-                //putString(a,b,terminal, "  ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
+			          //addNote();
+
+                if (adding) {
+                  if (key != null && key.getCharacter() == 'a'){
+                    adding = false;
+                    firstNote = true;
+                  }
 			        }
+              else {
+                adding = true;
+              }
+            }
+
+              if (adding){
+                if (firstNote) {
+                  currentTile().setMode(1);
+                  firstNote = false;
+                }
+                else {
+                  currentTile().setMode(2);
+                }
+              }
 
               if(mode == 0 && hasLoaded){
                       if(key.getKind() == Key.Kind.Backspace) {
@@ -107,6 +137,7 @@ public class MIDIEncoder{
                       }
 
               }
+
       }
 
 
@@ -141,6 +172,7 @@ public class MIDIEncoder{
               for (int row = 0; row < 13; row++){
                 for (int col = 0; col < (length); col++){
                   if (grid[row][col].getMode() == 1) putString(col + 5, row + 5,terminal, " ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
+                  if (grid[row][col].getMode() == 2) putString(col + 5, row + 5,terminal, " ",Terminal.Color.RED,Terminal.Color.RED,Terminal.Color.RED);
                 }
               }
             }
@@ -178,15 +210,29 @@ public class MIDIEncoder{
     t.applyForegroundColor(Terminal.Color.DEFAULT);
   }
 
-  private boolean addNote(int mode){
-    if ((mode < 2) && (mode >= 0)){
-      currentTile().setMode(mode);
-      return true;
-    }else{
-      return false;
-    }
+  // private void addNote(){
+  //   adding = true;
+  //   boolean first = true;
+  //   while (adding) {
+  //     Key key = terminal.readInput();
+  //     if (key != null && key.getKind() == Key.Kind.ArrowRight){
+  //             if (currentx < (length +4)) currentx++;
+  //             terminal.clearScreen();
+  //             hasLoaded = false;
+  //     }
+  //     if (key != null && key.getCharacter() == 'a'){
+  //       adding = false;
+  //     }
+  //     if (first) {
+  //       currentTile().setMode(1);
+  //       first = false;
+  //     }
+  //     else {
+  //       currentTile().setMode(2);
+  //     }
+  //   }
+  // }
 
-  }
 
   private Tile currentTile(){
     return grid[currenty-5][currentx-5];
