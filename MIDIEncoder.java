@@ -92,6 +92,13 @@ public class MIDIEncoder{
                 //putString(a,b,terminal, "  ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
 			        }
 
+              if (key.getCharacter() == 'e'){
+                removeNote();
+                int a = currentx;
+                int b = currenty;
+                //putString(a,b,terminal, "  ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
+              }
+
               if(mode == 0 && hasLoaded){
                       if(key.getKind() == Key.Kind.Backspace) {
                               mode = 1;
