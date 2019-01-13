@@ -30,17 +30,15 @@ public class MIDIEncoder{
   private String filename;
 
   private boolean adding;
-
+  //new terminal object
   private Terminal terminal;
 
   private boolean hasLoaded;
 
   private int mode;
 
-  private boolean note;
-
   private boolean firstNote;
-
+  //contains all the hex codes corresponding to the notes on our given octave
   private String[] Hex;
 
 
@@ -121,6 +119,7 @@ public class MIDIEncoder{
 
               if (key.getCharacter() == 'r'){
                 removeNote();
+
               }
 
               if (adding){
@@ -156,7 +155,7 @@ public class MIDIEncoder{
       if(mode==0){
               if(!hasLoaded) {
 				putString(0,0,terminal, "to add a note, press 'a' to start and drag. to stop press 'a' again.",Terminal.Color.WHITE,Terminal.Color.RED,Terminal.Color.RED);
-        putString(0,1,terminal, "to remove a note, press 'r'              once you are done entering your music, press esc",Terminal.Color.WHITE,Terminal.Color.RED,Terminal.Color.RED);
+        putString(0,1,terminal, "to remove a note, press 'r'              once you are done entering your notes, press esc",Terminal.Color.WHITE,Terminal.Color.RED,Terminal.Color.RED);
 
 				putString(0,5,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
 				putString(0,6,terminal, "B   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
@@ -178,7 +177,7 @@ public class MIDIEncoder{
 				putString(0,17,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
         putString(1,3,terminal, "currentx: "+ currentx,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
         putString(15,3,terminal, "currenty: "+ currenty,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(30,3,terminal, "note: "+ note,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
+
         putString(45,3,terminal, "mode: "+ currentTile().getMode(),Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
         putString(currentx,currenty,terminal,"^",Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, Terminal.Color.GREEN);
               for (int row = 0; row < 13; row++){
@@ -260,17 +259,16 @@ public class MIDIEncoder{
   }
 
   private boolean removeNote(){
-    if(currentTile().getMode() != 0){
+    while((currentTile().getMode() != 0)){
       currentTile().setMode(0);
-      return true;
-    }else{
-      return false;
+      terminal.moveCursor(currentx++,currenty);
+      if(currentTile().getMode() == 1){
+        return true;
+      }
     }
+    return true;
   }
 
-  private boolean changeCurrent(int newmode){
-    return false;
-  }
 
   public String ToString(){
     return "";
