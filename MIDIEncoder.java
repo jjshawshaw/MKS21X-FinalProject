@@ -36,7 +36,9 @@ public class MIDIEncoder{
 
   private boolean note;
 
-  boolean firstNote;
+  private boolean firstNote;
+
+  private String[] Hex;
 
 
   public MIDIEncoder(String filename, int length){
@@ -112,6 +114,10 @@ public class MIDIEncoder{
               }
             }
 
+              if (key.getCharacter() == 'r'){
+                removeNote();
+              }
+
               if (adding){
                 if (firstNote) {
                   currentTile().setMode(1);
@@ -120,13 +126,6 @@ public class MIDIEncoder{
                 else {
                   currentTile().setMode(2);
                 }
-              }
-
-              if (key.getCharacter() == 'e'){
-                removeNote();
-                int a = currentx;
-                int b = currenty;
-                //putString(a,b,terminal, "  ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
               }
 
               if(mode == 0 && hasLoaded){
