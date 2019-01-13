@@ -41,6 +41,8 @@ public class MIDIEncoder{
   //contains all the hex codes corresponding to the notes on our given octave
   private String[] Hex;
 
+  private String[] Notes;
+
 
   public MIDIEncoder(String filename, int length){
     try {
@@ -53,6 +55,10 @@ public class MIDIEncoder{
     String[] Hex = new String[]{
     "48", "47", "46", "45", "44", "43", "42",
     "41", "40", "3F", "3E", "3D", "3C"};
+    //
+    String[] Notes = new String[]{
+    "C", "B", "A#", "A", "G#", "G", "F#",
+    "F", "E", "D#", "D", "C#", "C"};
     //Sets up grid
     grid = new Tile[13][length];
     for (int row = 0; row < 13; row++){
@@ -153,39 +159,13 @@ public class MIDIEncoder{
 
 
       if(mode==0){
-              if(!hasLoaded) {
-				putString(0,0,terminal, "to add a note, press 'a' to start and drag. to stop press 'a' again.",Terminal.Color.WHITE,Terminal.Color.RED,Terminal.Color.RED);
-        putString(0,1,terminal, "to remove a note, press 'r'              once you are done entering your notes, press esc",Terminal.Color.WHITE,Terminal.Color.RED,Terminal.Color.RED);
+        if(!hasLoaded){
+          //this draws a piano octave
+          printPiano();
+          //prints the header
+          putString(29,3,terminal, "key: " + Notes[currenty-5],Terminal.Color.BLACK, Terminal.Color.WHITE,Terminal.Color.RED);
+          printHeader();
 
-				putString(0,5,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(0,6,terminal, "B   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(0,7,terminal, "A#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-        putString(2,7,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(0,8,terminal, "A   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(0,9,terminal, "G#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-        putString(2,9,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(0,10,terminal, "G   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(0,11,terminal, "F#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-        putString(2,11,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(0,12,terminal, "F   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(0,13,terminal, "E   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(0,14,terminal, "D#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-        putString(2,14,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(0,15,terminal, "D   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(0,16,terminal, "C#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-        putString(2,16,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-				putString(0,17,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-        putString(1,3,terminal, "currentx: "+ currentx,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
-        putString(15,3,terminal, "currenty: "+ currenty,Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
-
-        putString(45,3,terminal, "mode: "+ currentTile().getMode(),Terminal.Color.BLUE, Terminal.Color.WHITE,Terminal.Color.RED);
-        putString(currentx,currenty,terminal,"^",Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, Terminal.Color.GREEN);
-              for (int row = 0; row < 13; row++){
-                for (int col = 0; col < (length); col++){
-                  if (grid[row][col].getMode() == 1) putString(col + 5, row + 5,terminal, " ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
-                  if (grid[row][col].getMode() == 2) putString(col + 5, row + 5,terminal, " ",Terminal.Color.RED,Terminal.Color.RED,Terminal.Color.RED);
-                }
-              }
             }
 
 
@@ -202,21 +182,62 @@ public class MIDIEncoder{
   }
 
   public static void main(String[] args){
-    try{
-      if (Integer.parseInt(args[1]) > 74) System.out.println("Length too large");
-      else if (Integer.parseInt(args[1]) < 1) System.out.println("Length too small");
-      else new MIDIEncoder(args[0], Integer.parseInt(args[1]));
-  }
-  catch(Exception e){
-    System.out.println("Syntax: MIDIEncoder filename length(1-74)");
-  }
-
-
-
-
-
+      try{
+        if (Integer.parseInt(args[1]) > 100) System.out.println("Length too large");
+        else if (Integer.parseInt(args[1]) < 1) System.out.println("Length too small");
+        else new MIDIEncoder(args[0], Integer.parseInt(args[1]));
+    }
+    catch(Exception e){
+      System.out.println("Syntax: MIDIEncoder filename length of grid [1,100]");
+    }
   }
 
+  public void printHeader(){
+    putString(0,0,terminal, "to add a note, press 'a' to start and drag. to stop press 'a' again.",Terminal.Color.WHITE,Terminal.Color.RED,Terminal.Color.RED);
+    putString(0,1,terminal, "to remove a note, press 'r'              once you are done entering your notes, press esc",Terminal.Color.WHITE,Terminal.Color.RED,Terminal.Color.RED);
+
+    //tracks the cursor location
+    putString(1,3,terminal, "currentx: "+ currentx,Terminal.Color.BLACK, Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(15,3,terminal, "currenty: "+ currenty,Terminal.Color.BLACK, Terminal.Color.WHITE,Terminal.Color.RED);
+
+    //keeps track of mode and key user is on
+    putString(38,3,terminal, "mode: " + currentTile().getMode(),Terminal.Color.BLACK, Terminal.Color.WHITE,Terminal.Color.RED);
+
+
+    putString(currentx,currenty,terminal,"^",Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, Terminal.Color.GREEN);
+          for (int row = 0; row < 13; row++){
+            for (int col = 0; col < (length); col++){
+              if (grid[row][col].getMode() == 1) putString(col + 5, row + 5,terminal, " ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
+              if (grid[row][col].getMode() == 2) putString(col + 5, row + 5,terminal, " ",Terminal.Color.RED,Terminal.Color.RED,Terminal.Color.RED);
+            }
+          }
+
+
+  }
+
+
+  public void printPiano(){
+  putString(0,5,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+  putString(0,6,terminal, "B   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+  putString(0,7,terminal, "A#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+  putString(2,7,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
+  putString(0,8,terminal, "A   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+  putString(0,9,terminal, "G#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+  putString(2,9,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
+  putString(0,10,terminal, "G   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+  putString(0,11,terminal, "F#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+  putString(2,11,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
+  putString(0,12,terminal, "F   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+  putString(0,13,terminal, "E   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+  putString(0,14,terminal, "D#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+  putString(2,14,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
+  putString(0,15,terminal, "D   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+  putString(0,16,terminal, "C#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+  putString(2,16,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
+  putString(0,17,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+}
+
+//taken from Mr.K's demo
   public void putString(int r, int c,Terminal t,
         String s, Terminal.Color text, Terminal.Color forg, Terminal.Color back ){
     t.moveCursor(r,c);
@@ -259,9 +280,11 @@ public class MIDIEncoder{
   }
 
   private boolean removeNote(){
+    // checks if the current tile is 'on'
     while((currentTile().getMode() != 0)){
       currentTile().setMode(0);
       terminal.moveCursor(currentx++,currenty);
+      //checks if there is a new note ahead and stops removing
       if(currentTile().getMode() == 1){
         return true;
       }
