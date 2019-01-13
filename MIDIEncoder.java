@@ -150,7 +150,8 @@ public class MIDIEncoder{
 
       if(mode==0){
               if(!hasLoaded) {
-				putString(0,0,terminal, "AAAAAAAAAAAAAAAAAAAAAAAAAAWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",Terminal.Color.RED,Terminal.Color.RED,Terminal.Color.RED);
+				putString(0,0,terminal, "to add a note, press 'a' to start and drag. to stop press 'a' again.",Terminal.Color.WHITE,Terminal.Color.RED,Terminal.Color.RED);
+        putString(0,1,terminal, "to remove a note, press 'r'              once you are done entering your music, press esc",Terminal.Color.WHITE,Terminal.Color.RED,Terminal.Color.RED);
 
 				putString(0,5,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
 				putString(0,6,terminal, "B   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
