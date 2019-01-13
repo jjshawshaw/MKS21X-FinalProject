@@ -194,8 +194,13 @@ public class MIDIEncoder{
   }
 
   public static void main(String[] args){
-
-    MIDIEncoder M = new MIDIEncoder(args[0], Integer.parseInt(args[1]));
+    try{
+      if (Integer.parseInt(args[1]) > 74) System.out.println("Length too large");
+      else new MIDIEncoder(args[0], Integer.parseInt(args[1]));
+  }
+  catch(Exception e){
+    System.out.println("Syntax: MIDIEncoder filename length(0-74)");
+  }
 
 
 
