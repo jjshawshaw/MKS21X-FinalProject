@@ -11,6 +11,9 @@ import com.googlecode.lanterna.input.InputDecoder;
 import com.googlecode.lanterna.input.InputProvider;
 import com.googlecode.lanterna.input.Key;
 import com.googlecode.lanterna.input.KeyMappingProfile;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
 
 public class MIDIEncoder{
   //grid of each beat
@@ -42,6 +45,7 @@ public class MIDIEncoder{
 
 
   public MIDIEncoder(String filename, int length){
+    try {
     this.length = length;
     this.filename = filename;
     currentx = 5;
@@ -76,7 +80,8 @@ public class MIDIEncoder{
                       //terminal.setCursorVisible(false);
 
                       terminal.exitPrivateMode();
-                      System.out.println(toHex());
+                      //System.out.println(toHex());
+                      getFile();
                       complete = true;
               }
               if (key.getKind() == Key.Kind.ArrowUp){
@@ -190,7 +195,10 @@ public class MIDIEncoder{
               }
 
       }
-
+    }
+    catch(IOException e){
+      System.out.println("Please enter a valid filename");
+    }
   }
 
   public static void main(String[] args){
@@ -266,8 +274,10 @@ public class MIDIEncoder{
     return "";
   }
 
-  private boolean getFile(){
-    return false;
+  private void getFile() throws IOException{
+      FileWriter w = new FileWriter(filename);
+      w.write(toHex());
+      w.close();
   }
 
   private int[] getNotes(int col){
