@@ -77,37 +77,34 @@ public class MIDIEncoder{
     firstNote = true;
     while(!(complete)){
       Key key = terminal.readInput();
-      if (key != null)
-      {
-
-              if (key.getKind() == Key.Kind.Escape) {
-                      //terminal.setCursorVisible(false);
-
-                      terminal.exitPrivateMode();
-                      //System.out.println(toHex());
-                      getFile();
-                      complete = true;
-              }
-              if (key.getKind() == Key.Kind.ArrowUp){
-                      if (currenty > 5 && !adding)  currenty--;
-                      terminal.clearScreen();
-                      hasLoaded = false;
-              }
-              if (key.getKind() == Key.Kind.ArrowDown){
-                      if (currenty < 17 && !adding) currenty++;
-                      terminal.clearScreen();
-                      hasLoaded = false;
-              }
-              if (key.getKind() == Key.Kind.ArrowRight){
-                      if (currentx < (length +4)) currentx++;
-                      terminal.clearScreen();
-                      hasLoaded = false;
-              }
-              if (key.getKind() == Key.Kind.ArrowLeft){
-                      if (currentx > 5  && !adding) currentx--;
-                      terminal.clearScreen();
-                      hasLoaded = false;
-              }
+      if (key != null){
+        if (key.getKind() == Key.Kind.Escape) {
+                //terminal.setCursorVisible(false);
+                terminal.exitPrivateMode();
+                //System.out.println(toHex());
+                getFile();
+                complete = true;
+        }
+        if (key.getKind() == Key.Kind.ArrowUp){
+                if (currenty > 5 && !adding)  currenty--;
+                terminal.clearScreen();
+                hasLoaded = false;
+        }
+        if (key.getKind() == Key.Kind.ArrowDown){
+                if (currenty < 17 && !adding) currenty++;
+                terminal.clearScreen();
+                hasLoaded = false;
+        }
+        if (key.getKind() == Key.Kind.ArrowRight){
+                if (currentx < (length +4)) currentx++;
+                terminal.clearScreen();
+                hasLoaded = false;
+        }
+        if (key.getKind() == Key.Kind.ArrowLeft){
+                if (currentx > 5  && !adding) currentx--;
+                terminal.clearScreen();
+                hasLoaded = false;
+        }
 
               if (key.getCharacter() == 'a'){
 			          //addNote();
@@ -205,16 +202,15 @@ public class MIDIEncoder{
 
 
     putString(currentx,currenty,terminal,"^",Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, Terminal.Color.GREEN);
-          for (int row = 0; row < 13; row++){
-            for (int col = 0; col < (length); col++){
-              if (grid[row][col].getMode() == 1) putString(col + 5, row + 5,terminal, " ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
-              if (grid[row][col].getMode() == 2) putString(col + 5, row + 5,terminal, " ",Terminal.Color.RED,Terminal.Color.RED,Terminal.Color.RED);
-            }
-          }
+    for (int row = 0; row < 13; row++){
+      for (int col = 0; col < (length); col++){
+        if (grid[row][col].getMode() == 1) putString(col + 5, row + 5,terminal, " ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
+        if (grid[row][col].getMode() == 2) putString(col + 5, row + 5,terminal, " ",Terminal.Color.RED,Terminal.Color.RED,Terminal.Color.RED);
+      }
+    }
 
 
   }
-
 
   public void printPiano(){
   putString(0,5,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
@@ -237,7 +233,7 @@ public class MIDIEncoder{
   putString(0,17,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
 }
 
-//taken from Mr.K's demo
+  //taken from Mr.K's demo
   public void putString(int r, int c,Terminal t,
         String s, Terminal.Color text, Terminal.Color forg, Terminal.Color back ){
     t.moveCursor(r,c);
@@ -250,30 +246,6 @@ public class MIDIEncoder{
     t.applyBackgroundColor(Terminal.Color.DEFAULT);
     t.applyForegroundColor(Terminal.Color.DEFAULT);
   }
-
-  // private void addNote(){
-  //   adding = true;
-  //   boolean first = true;
-  //   while (adding) {
-  //     Key key = terminal.readInput();
-  //     if (key != null && key.getKind() == Key.Kind.ArrowRight){
-  //             if (currentx < (length +4)) currentx++;
-  //             terminal.clearScreen();
-  //             hasLoaded = false;
-  //     }
-  //     if (key != null && key.getCharacter() == 'a'){
-  //       adding = false;
-  //     }
-  //     if (first) {
-  //       currentTile().setMode(1);
-  //       first = false;
-  //     }
-  //     else {
-  //       currentTile().setMode(2);
-  //     }
-  //   }
-  // }
-
 
   private Tile currentTile(){
     return grid[currenty-5][currentx-5];
@@ -290,11 +262,6 @@ public class MIDIEncoder{
       }
     }
     return true;
-  }
-
-
-  public String ToString(){
-    return "";
   }
 
   private void getFile() throws IOException{
