@@ -241,7 +241,9 @@ public class MIDIEncoder{
     // checks if the current tile is 'on'
     while((currentTile().getMode() != 0)){
       currentTile().setMode(0);
+      if (currentx != length+4){
       terminal.moveCursor(currentx++,currenty);
+      }
       //checks if there is a new note ahead and stops removing
       if(currentTile().getMode() == 1){
         return true;

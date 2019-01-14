@@ -118,8 +118,6 @@ public class TerminalDemo {
 
       if(mode==0){
               if(!hasLoaded) {
-				putString(0,0,terminal, "AAAAAAAAAAAAAAAAAAAAAAAAAAWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW",Terminal.Color.RED,Terminal.Color.RED,Terminal.Color.RED);
-
 				putString(1,5,terminal, "C ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
 				putString(1,6,terminal, "B ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
 				putString(1,7,terminal, "A#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
