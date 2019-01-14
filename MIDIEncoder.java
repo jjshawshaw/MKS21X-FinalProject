@@ -105,51 +105,43 @@ public class MIDIEncoder{
                 terminal.clearScreen();
                 hasLoaded = false;
         }
-
-              if (key.getCharacter() == 'a'){
-			          //addNote();
-
-                if (adding) {
-                  if (key != null && key.getCharacter() == 'a'){
-                    adding = false;
-                    firstNote = true;
-                  }
-			        }
-              else {
-                adding = true;
-              }
+        if (key.getCharacter() == 'r'){
+          removeNote();
+        }
+        if (key.getCharacter() == 'a'){
+          if (adding){
+            if (key != null && key.getCharacter() == 'a'){
+            adding = false;
+            firstNote = true;
             }
-
-              if (key.getCharacter() == 'r'){
-                removeNote();
-
-              }
-
-              if (adding){
-                if (firstNote) {
-                  currentTile().setMode(1);
-                  firstNote = false;
+          }else{
+            adding = true;
+          }
+        }
+        if (adding){
+          if (firstNote) {
+            currentTile().setMode(1);
+            firstNote = false;
+          }
+          else {
+            currentTile().setMode(2);
+          }
+        }
+        if(mode == 0 && hasLoaded){
+                if(key.getKind() == Key.Kind.Backspace) {
+                        mode = 1;
+                        hasLoaded = false;
+                          terminal.clearScreen();
                 }
-                else {
-                  currentTile().setMode(2);
+        }
+        if(mode == 1 && hasLoaded) {
+                if(key.getKind() == Key.Kind.Backspace) {
+                        mode = 0;
+                        hasLoaded = false;
+                          terminal.clearScreen();
                 }
-              }
 
-              if(mode == 0 && hasLoaded){
-                      if(key.getKind() == Key.Kind.Backspace) {
-                              mode = 1;
-                              hasLoaded = false;
-                                terminal.clearScreen();
-                      }
-              }
-              if(mode == 1 && hasLoaded) {
-                      if(key.getKind() == Key.Kind.Backspace) {
-                              mode = 0;
-                              hasLoaded = false;
-                                terminal.clearScreen();
-                      }
-
-              }
+        }
 
       }
 
