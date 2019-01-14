@@ -1,6 +1,7 @@
-### MKS21X-FinalProject
+# MKS21X-FinalProject
 We will be creating a simple java terminal-based MIDI encoder.
-Instructions:
+
+## Instructions:
 To compile the program, type:
 ```
 javac -cp lanterna.jar:. MIDIEncoder.java
@@ -9,9 +10,14 @@ javac -cp lanterna.jar:. MIDIEncoder.java
 To run the program, type:
 
 ```
-java -cp lanterna.jar:. MIDIEncoder file.txt int[1-100]
+java -cp lanterna.jar:. MIDIEncoder new.txt int[1-100]
 ```
+The new.txt is a file to which your music will be written to.
+The integer deptermines the length of the grid and is 1-100 inclusive.
 
+Within the program, use arrow keys to navigate and the "a" key to add notes and "r" to remove. Esc to terminate the program. After your program is complete, the notes you drew in will be written to a text file in Hex code.
+
+## Devlog:
 01.03.19
 Today we created the repo and put the necessary files in it so that we may begin work tomorrow.
 
@@ -56,5 +62,6 @@ We were both quite sick so no work was done on this day.
 - modified the add and remove methods
 - added a key tracker and updated the header to directions
 - cleaned up the code and got rid of useless methods
+- the product of the program now writes to a file that is specified within the parameters upon running
 
 
