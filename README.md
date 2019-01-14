@@ -17,6 +17,12 @@ The integer deptermines the length of the grid and is 1-100 inclusive.
 
 Within the program, use arrow keys to navigate and the "a" key to add notes and "r" to remove. Esc to terminate the program. After your program is complete, the notes you drew in will be written to a text file in Hex code.
 
+Hex code to Byte converter:
+http://kuga.me/hello-midi/
+
+MIDI Player:
+https://qiao.github.io/euphony/#15
+
 ## Devlog:
 01.03.19
 Today we created the repo and put the necessary files in it so that we may begin work tomorrow.
