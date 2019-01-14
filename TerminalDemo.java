@@ -68,12 +68,12 @@ public class TerminalDemo {
                       running = false;
               }
               if (key.getKind() == Key.Kind.ArrowUp){
-                      if (currenty > 0) currenty--;
+                      if ((currenty > 0) && !(adding))currenty--;
                       terminal.clearScreen();
                       hasLoaded = false;
               }
               if (key.getKind() == Key.Kind.ArrowDown){
-                      if (currenty < 18) currenty++;
+                      if ((currenty < 18) && !(adding)) currenty++;
                       terminal.clearScreen();
                       hasLoaded = false;
               }
@@ -83,7 +83,7 @@ public class TerminalDemo {
                       hasLoaded = false;
               }
               if (key.getKind() == Key.Kind.ArrowLeft){
-                      if (currentx > 0)currentx--;
+                      if ((currentx > 0) && !(adding) )currentx--;
                       terminal.clearScreen();
                       hasLoaded = false;
               }
