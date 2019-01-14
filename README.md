@@ -1,14 +1,16 @@
-# MKS21X-FinalProject
+### MKS21X-FinalProject
 We will be creating a simple java terminal-based MIDI encoder.
 Instructions:
 To compile the program, type:
-
+```
 javac -cp lanterna.jar:. MIDIEncoder.java
+```
 
 To run the program, type:
 
+```
 java -cp lanterna.jar:. MIDIEncoder file.txt int[1-100]
-
+```
 
 01.03.19
 Today we created the repo and put the necessary files in it so that we may begin work tomorrow.
