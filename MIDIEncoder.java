@@ -128,25 +128,20 @@ public class MIDIEncoder{
           }
         }
         if(mode == 0 && hasLoaded){
-                if(key.getKind() == Key.Kind.Backspace) {
-                        mode = 1;
-                        hasLoaded = false;
-                          terminal.clearScreen();
-                }
+          if(key.getKind() == Key.Kind.Backspace) {
+            mode = 1;
+            hasLoaded = false;
+            terminal.clearScreen();
+          }
         }
         if(mode == 1 && hasLoaded) {
-                if(key.getKind() == Key.Kind.Backspace) {
-                        mode = 0;
-                        hasLoaded = false;
-                          terminal.clearScreen();
-                }
-
+          if(key.getKind() == Key.Kind.Backspace) {
+            mode = 0;
+            hasLoaded = false;
+            terminal.clearScreen();
+          }
         }
-
       }
-
-
-
       if(mode==0){
         if(!hasLoaded){
           //this draws a piano octave
@@ -162,9 +157,8 @@ public class MIDIEncoder{
 
 				hasLoaded = true;
               }
-
-      }
     }
+  }
     catch(IOException e){
       System.out.println("Please enter a valid filename");
     }
