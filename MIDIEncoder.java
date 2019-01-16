@@ -187,18 +187,22 @@ public class MIDIEncoder{
     putString(38,3,terminal, "mode: " + currentTile().getMode(),Terminal.Color.BLACK, Terminal.Color.WHITE,Terminal.Color.RED);
 
 
-    putString(currentx,currenty,terminal,"^",Terminal.Color.DEFAULT, Terminal.Color.DEFAULT, Terminal.Color.GREEN);
+      putString(currentx,currenty,terminal,"▯",Terminal.Color.WHITE, Terminal.Color.BLACK, Terminal.Color.GREEN);
     for (int row = 0; row < 13; row++){
       for (int col = 0; col < (length); col++){
-        if (grid[row][col].getMode() == 1) putString(col + 5, row + 5,terminal, " ",Terminal.Color.GREEN,Terminal.Color.GREEN,Terminal.Color.RED);
-        if (grid[row][col].getMode() == 2) putString(col + 5, row + 5,terminal, " ",Terminal.Color.RED,Terminal.Color.RED,Terminal.Color.RED);
-      }
+        if (grid[row][col].getMode() == 1) putString(col + 5, row + 5,terminal, "▮",Terminal.Color.GREEN,Terminal.Color.BLACK,Terminal.Color.RED);
+        else if (grid[row][col].getMode() == 2) putString(col + 5, row + 5,terminal, "▮",Terminal.Color.RED,Terminal.Color.BLACK,Terminal.Color.RED);
+        else {
+          if (!(row + 5 == currenty && col + 5 == currentx))
+          putString(col + 5, row + 5,terminal, "▮",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+        }
     }
+  }
 
 
   }
 
-  public void printPiano(){
+  private void printPiano(){
   putString(0,5,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
   putString(0,6,terminal, "B   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
   putString(0,7,terminal, "A#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
