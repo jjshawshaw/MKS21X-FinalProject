@@ -260,7 +260,7 @@ public class MIDIEncoder{
 
   private void getFile() throws IOException{
       FileWriter w = new FileWriter(filename);
-      w.write(toHex());
+      w.write(toByte());
       w.close();
   }
 
@@ -276,6 +276,7 @@ public class MIDIEncoder{
   private byte toByte(){
     return hexToByte(toHex());
   }
+
   public byte hexToByte(String hexString) {
     int firstDigit = toDigit(hexString.charAt(0));
     int secondDigit = toDigit(hexString.charAt(1));
