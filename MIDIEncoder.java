@@ -273,8 +273,8 @@ public class MIDIEncoder{
   }
 
 
-  private byte[] toByte(){
-    hexToByte(toHex());
+  private byte toByte(){
+    return hexToByte(toHex());
   }
   public byte hexToByte(String hexString) {
     int firstDigit = toDigit(hexString.charAt(0));
