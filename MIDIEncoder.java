@@ -43,6 +43,8 @@ public class MIDIEncoder{
 
   private String[] Notes;
 
+  private byte[] data;
+
 
   public MIDIEncoder(String filename, int length){
     try {
@@ -270,6 +272,24 @@ public class MIDIEncoder{
     return Notes;
   }
 
+
+  private byte[] toByte(){
+    hexToByte(toHex());
+  }
+  public byte hexToByte(String hexString) {
+    int firstDigit = toDigit(hexString.charAt(0));
+    int secondDigit = toDigit(hexString.charAt(1));
+    return (byte) ((firstDigit << 4) + secondDigit);
+  }
+
+  private int toDigit(char hexChar) {
+    int digit = Character.digit(hexChar, 16);
+    if(digit == -1) {
+        throw new IllegalArgumentException(
+          "Invalid Hexadecimal Character: "+ hexChar);
+    }
+    return digit;
+  }
   private String toHex(){
       //Header chunk of the MIDI file
       String output = "4D 54 68 64 00 00 00 06 00 01 00 01 00 E0 4D 54 72 6B ";
