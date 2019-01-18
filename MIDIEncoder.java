@@ -45,6 +45,8 @@ public class MIDIEncoder{
 
   private byte[] data;
 
+  private boolean a;
+
 
   public MIDIEncoder(String filename, int length){
     try {
@@ -111,15 +113,18 @@ public class MIDIEncoder{
           removeNote();
         }
         if (key.getCharacter() == 'a'){
+          a = true;
           if (adding){
             if (key != null && key.getCharacter() == 'a'){
             adding = false;
+            a = false;
             firstNote = true;
             }
           }else{
             adding = true;
           }
         }
+
         if (adding){
           if (firstNote) {
             currentTile().setMode(1);
@@ -129,6 +134,10 @@ public class MIDIEncoder{
             currentTile().setMode(2);
           }
         }
+
+
+
+
         if(mode == 0 && hasLoaded){
           if(key.getKind() == Key.Kind.Backspace) {
             mode = 1;
@@ -189,7 +198,7 @@ public class MIDIEncoder{
     putString(38,3,terminal, "mode: " + currentTile().getMode(),Terminal.Color.BLACK, Terminal.Color.WHITE,Terminal.Color.RED);
 
 
-      putString(currentx,currenty,terminal,"▯",Terminal.Color.WHITE, Terminal.Color.BLACK, Terminal.Color.GREEN);
+    putString(currentx,currenty,terminal,"▯",Terminal.Color.WHITE, Terminal.Color.BLACK, Terminal.Color.GREEN);
     for (int row = 0; row < 13; row++){
       for (int col = 0; col < (length); col++){
         if (grid[row][col].getMode() == 1) putString(col + 5, row + 5,terminal, "▮",Terminal.Color.GREEN,Terminal.Color.BLACK,Terminal.Color.RED);
