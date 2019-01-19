@@ -11,9 +11,8 @@ import com.googlecode.lanterna.input.InputDecoder;
 import com.googlecode.lanterna.input.InputProvider;
 import com.googlecode.lanterna.input.Key;
 import com.googlecode.lanterna.input.KeyMappingProfile;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileWriter;
+import java.io.*;
+import java.util.*;
 
 public class MIDIEncoder{
   //grid of each beat
@@ -43,7 +42,8 @@ public class MIDIEncoder{
 
   private String[] Notes;
 
-  private byte[] data;
+  private String[] hexData;
+  private byte[] byteData;
 
 
   public MIDIEncoder(String filename, int length){
@@ -226,7 +226,7 @@ public class MIDIEncoder{
 }
 
   //taken from Mr.K's demo
-  public void putString(int r, int c,Terminal t,
+  public void putString(int r, int c, Terminal t,
         String s, Terminal.Color text, Terminal.Color forg, Terminal.Color back ){
     t.moveCursor(r,c);
     t.applyBackgroundColor(forg);
@@ -260,7 +260,11 @@ public class MIDIEncoder{
 
   private void getFile() throws IOException{
       FileWriter w = new FileWriter(filename);
-      w.write(toByte());
+      try (FileOutputStream fos = new FileOutputStream(filename)) {
+      fos.write(byteData);
+      } catch (IOException ioe) {
+          ioe.printStackTrace();
+      }
       w.close();
   }
 
@@ -273,8 +277,11 @@ public class MIDIEncoder{
   }
 
 
-  private byte toByte(){
-    return hexToByte(toHex());
+  private void toByte(){
+    String[] hexData = toHex().split(" ");
+    for(int i = 0; i < hexData.length; i++){
+      byteData[i] = hexToByte(hexData[i]);
+    }
   }
 
   public byte hexToByte(String hexString) {
@@ -334,6 +341,7 @@ public class MIDIEncoder{
       }
       return output += temp3 + output2;
     }
+
 
 
 }
