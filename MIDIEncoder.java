@@ -101,6 +101,7 @@ public class MIDIEncoder{
                 if (currentx < (length +4)) currentx++;
                 terminal.clearScreen();
                 hasLoaded = false;
+
         }
         if (key.getKind() == Key.Kind.ArrowLeft){
                 if (currentx > 5  && !adding) currentx--;
@@ -110,11 +111,13 @@ public class MIDIEncoder{
         if (key.getCharacter() == 'r'){
           removeNote();
         }
+
         if (key.getCharacter() == 'a'){
+
           if (adding){
             if (key != null && key.getCharacter() == 'a'){
-            adding = false;
-            firstNote = true;
+              adding = false;
+              firstNote = true;
             }
           }else{
             adding = true;
@@ -129,13 +132,16 @@ public class MIDIEncoder{
             currentTile().setMode(2);
           }
         }
+
+
         if(mode == 0 && hasLoaded){
-          if(key.getKind() == Key.Kind.Backspace) {
+          if(key.getKind() == Key.Kind.Backspace){
             mode = 1;
             hasLoaded = false;
             terminal.clearScreen();
           }
         }
+
         if(mode == 1 && hasLoaded) {
           if(key.getKind() == Key.Kind.Backspace) {
             mode = 0;
@@ -187,6 +193,7 @@ public class MIDIEncoder{
 
     //keeps track of mode and key user is on
     putString(38,3,terminal, "mode: " + currentTile().getMode(),Terminal.Color.BLACK, Terminal.Color.WHITE,Terminal.Color.RED);
+    
 
 
       putString(currentx,currenty,terminal,"▯",Terminal.Color.WHITE, Terminal.Color.BLACK, Terminal.Color.GREEN);
