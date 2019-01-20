@@ -297,10 +297,18 @@ public class MIDIEncoder{
       int trackLen = 0;
       //Track information
       String output2 = "";
+      int[][] Notes = new int[length][13];
+      for (int col = 0; col < length; col++){
+        Notes[col] = getNotes(col);
+      }
       for (int col = 0; col < length; col++){
         if (col > 0) {
           output2 += "80 48 ";
           trackLen += 2;
+          for (int row = 0; row < 13; row++){
+              output2 += "91 " + grid[row][col].getVal() + "00 ";
+              trackLen += 3;
+            }
         }
         else {
           output2 += "80 00 ";
@@ -311,10 +319,12 @@ public class MIDIEncoder{
             output2 += "80 00 ";
             trackLen += 2;
           }
-          if (grid[row][col].getMode() != 2){
-            output2 += "91 " + grid[row][col].getVal() + " ";
-            if (grid[row][col].getMode() == 0) output2 += "00 ";
-            else output2 += "64 ";
+          if (Notes[row][col] == 1){
+            output2 += "91 " + grid[row][col].getVal() + "64";
+            trackLen += 3;
+          }
+          if (col > 0 && (Notes[row][col] == 0 && Notes[row][col - 1] > 0)){
+            output2 += "91 " + grid[row][col].getVal() + "00";
             trackLen += 3;
           }
         }
