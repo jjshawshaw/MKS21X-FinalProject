@@ -175,14 +175,14 @@ public class MIDIEncoder{
   }
 
   public static void main(String[] args){
-
+    try{
         if (Integer.parseInt(args[1]) > 100) System.out.println("Length too large");
         else if (Integer.parseInt(args[1]) < 1) System.out.println("Length too small");
         else new MIDIEncoder(args[0], Integer.parseInt(args[1]));
-
-    /*catch(Exception e){
+      }
+    catch(IndexOutOfBoundsException e){
       System.out.println("Syntax: MIDIEncoder filename length of grid [1,100]");
-    }*/
+    }
   }
 
   public void printHeader(){
@@ -195,7 +195,7 @@ public class MIDIEncoder{
 
     //keeps track of mode and key user is on
     putString(38,3,terminal, "mode: " + currentTile().getMode(),Terminal.Color.BLACK, Terminal.Color.WHITE,Terminal.Color.RED);
-    
+
 
 
       putString(currentx,currenty,terminal,"▯",Terminal.Color.WHITE, Terminal.Color.BLACK, Terminal.Color.GREEN);
@@ -299,7 +299,7 @@ public class MIDIEncoder{
       for(int i = 0; i < hexData.length; i++){
        byteData[i] = hexToByte(hexData[i]);
       }
-      throw new IndexOutOfBoundsException("If you want a message, put it here");
+      //throw new IndexOutOfBoundsException("If you want a message, put it here");
     }catch (IndexOutOfBoundsException e) {
       System.out.println(e.getMessage());
     }
