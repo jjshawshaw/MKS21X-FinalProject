@@ -11,9 +11,10 @@ import com.googlecode.lanterna.input.InputDecoder;
 import com.googlecode.lanterna.input.InputProvider;
 import com.googlecode.lanterna.input.Key;
 import com.googlecode.lanterna.input.KeyMappingProfile;
-import java.io.File;
-import java.io.IOException;
-import java.io.FileWriter;
+import java.io.*;
+import java.util.*;
+import java.lang.IndexOutOfBoundsException;
+
 
 public class MIDIEncoder{
   //grid of each beat
@@ -43,7 +44,8 @@ public class MIDIEncoder{
 
   private String[] Notes;
 
-  private byte[] data;
+  private String[] hexData;
+  private byte[] byteData;
 
 
   public MIDIEncoder(String filename, int length){
@@ -173,14 +175,14 @@ public class MIDIEncoder{
   }
 
   public static void main(String[] args){
-      try{
+
         if (Integer.parseInt(args[1]) > 100) System.out.println("Length too large");
         else if (Integer.parseInt(args[1]) < 1) System.out.println("Length too small");
         else new MIDIEncoder(args[0], Integer.parseInt(args[1]));
-    }
-    catch(Exception e){
+
+    /*catch(Exception e){
       System.out.println("Syntax: MIDIEncoder filename length of grid [1,100]");
-    }
+    }*/
   }
 
   public void printHeader(){
@@ -212,28 +214,28 @@ public class MIDIEncoder{
   }
 
   private void printPiano(){
-  putString(0,5,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-  putString(0,6,terminal, "B   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-  putString(0,7,terminal, "A#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-  putString(2,7,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-  putString(0,8,terminal, "A   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-  putString(0,9,terminal, "G#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-  putString(2,9,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-  putString(0,10,terminal, "G   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-  putString(0,11,terminal, "F#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-  putString(2,11,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-  putString(0,12,terminal, "F   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-  putString(0,13,terminal, "E   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-  putString(0,14,terminal, "D#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-  putString(2,14,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-  putString(0,15,terminal, "D   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-  putString(0,16,terminal, "C#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-  putString(2,16,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-  putString(0,17,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(0,5,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(0,6,terminal, "B   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(0,7,terminal, "A#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+    putString(2,7,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(0,8,terminal, "A   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(0,9,terminal, "G#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+    putString(2,9,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(0,10,terminal, "G   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(0,11,terminal, "F#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+    putString(2,11,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(0,12,terminal, "F   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(0,13,terminal, "E   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(0,14,terminal, "D#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+    putString(2,14,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(0,15,terminal, "D   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(0,16,terminal, "C#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+    putString(2,16,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
+    putString(0,17,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
 }
 
   //taken from Mr.K's demo
-  public void putString(int r, int c,Terminal t,
+  public void putString(int r, int c, Terminal t,
         String s, Terminal.Color text, Terminal.Color forg, Terminal.Color back ){
     t.moveCursor(r,c);
     t.applyBackgroundColor(forg);
@@ -266,9 +268,19 @@ public class MIDIEncoder{
   }
 
   private void getFile() throws IOException{
-      FileWriter w = new FileWriter(filename);
-      w.write(toByte());
-      w.close();
+      //FileWriter w = new FileWriter(filename);
+      toByte();
+      File f = new File(filename);
+      f.createNewFile();
+      try (FileOutputStream out = new FileOutputStream(f)) {
+          out.write(byteData);
+          out.flush();
+          out.close();
+      } catch (IOException ioe) {
+          System.out.println("file writing error");
+          ioe.printStackTrace();
+      }
+
   }
 
   private int[] getNotes(int col){
@@ -280,8 +292,17 @@ public class MIDIEncoder{
   }
 
 
-  private byte toByte(){
-    return hexToByte(toHex());
+  private void toByte(){
+    hexData = toHex().split(" ");
+    byteData = new byte[hexData.length];
+    try {
+      for(int i = 0; i < hexData.length; i++){
+       byteData[i] = hexToByte(hexData[i]);
+      }
+      throw new IndexOutOfBoundsException("If you want a message, put it here");
+    }catch (IndexOutOfBoundsException e) {
+      System.out.println(e.getMessage());
+    }
   }
 
   public byte hexToByte(String hexString) {
@@ -298,6 +319,7 @@ public class MIDIEncoder{
     }
     return digit;
   }
+
   private String toHex(){
       //Header chunk of the MIDI file
       String output = "4D 54 68 64 00 00 00 06 00 01 00 01 00 E0 4D 54 72 6B ";
@@ -341,6 +363,4 @@ public class MIDIEncoder{
       }
       return output += temp3 + output2;
     }
-
-
 }
