@@ -70,4 +70,24 @@ We were both quite sick so no work was done on this day.
 - cleaned up the code and got rid of useless methods
 - the product of the program now writes to a file that is specified within the parameters upon running
 
+01.14.19
+- no commits on this day, we were researching how to convert to bytes
+- worked on implementing screen to stop flickering but it broke everything
 
+01.15.19
+- attempting to fix the way the addnote method works 
+- worked on implementing screen to stop flickering but it broke everything
+
+01.16.19
+- attempting to fix the way the addnote method works 
+- made the program display a grid
+
+01.17.19
+- modified toHex method to make it easier to convert to bytes
+- wrote algortihm to convert hex code to bytes
+
+01.18.19
+
+
+01.19.19
+- got the code to output to a .mid file :)))
