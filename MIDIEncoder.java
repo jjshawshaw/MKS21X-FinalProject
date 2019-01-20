@@ -261,17 +261,14 @@ public class MIDIEncoder{
   }
 
   private void getFile() throws IOException{
-      //FileWriter w = new FileWriter(filename);
-      try (FileOutputStream fos = new FileOutputStream(filename)) {
+      FileWriter w = new FileWriter(filename);
+      try (FileOutputStream fos = new FileOutputStream("")) {
         fos.write(byteData);
         fos.close();
       } catch (IOException ioe) {
           System.out.println("file writing error");
           ioe.printStackTrace();
       }
-      //w.close();
-
-
 
   }
 
