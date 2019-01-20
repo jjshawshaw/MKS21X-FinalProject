@@ -15,6 +15,7 @@ import java.io.*;
 import java.util.*;
 import java.lang.IndexOutOfBoundsException;
 
+
 public class MIDIEncoder{
   //grid of each beat
   private static Tile[][] grid;
@@ -168,14 +169,14 @@ public class MIDIEncoder{
   }
 
   public static void main(String[] args){
-      try{
+
         if (Integer.parseInt(args[1]) > 100) System.out.println("Length too large");
         else if (Integer.parseInt(args[1]) < 1) System.out.println("Length too small");
         else new MIDIEncoder(args[0], Integer.parseInt(args[1]));
-    }
-    catch(Exception e){
+
+    /*catch(Exception e){
       System.out.println("Syntax: MIDIEncoder filename length of grid [1,100]");
-    }
+    }*/
   }
 
   public void printHeader(){
@@ -260,14 +261,18 @@ public class MIDIEncoder{
   }
 
   private void getFile() throws IOException{
-      FileWriter w = new FileWriter(filename);
+      //FileWriter w = new FileWriter(filename);
       try (FileOutputStream fos = new FileOutputStream(filename)) {
-      fos.write(byteData);
+        fos.write(byteData);
+        fos.close();
       } catch (IOException ioe) {
           System.out.println("file writing error");
           ioe.printStackTrace();
       }
-      w.close();
+      //w.close();
+
+
+
   }
 
   private int[] getNotes(int col){
@@ -305,6 +310,7 @@ public class MIDIEncoder{
     }
     return digit;
   }
+
   private String toHex(){
       //Header chunk of the MIDI file
       String output = "4D 54 68 64 00 00 00 06 00 01 00 01 00 E0 4D 54 72 6B ";
@@ -348,7 +354,4 @@ public class MIDIEncoder{
       }
       return output += temp3 + output2;
     }
-
-
-
 }
