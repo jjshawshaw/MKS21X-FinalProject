@@ -261,7 +261,8 @@ public class MIDIEncoder{
   }
 
   private void getFile() throws IOException{
-      FileWriter w = new FileWriter(filename);
+      //FileWriter w = new FileWriter(filename);
+      toByte();
       try (FileOutputStream fos = new FileOutputStream("")) {
         fos.write(byteData);
         fos.close();
@@ -283,6 +284,7 @@ public class MIDIEncoder{
 
   private void toByte(){
     String[] hexData = toHex().split(" ");
+    byte[] byteData = new byte[hexData.length];
     try {
       for(int i = 0; i < hexData.length; i++){
        byteData[i] = hexToByte(hexData[i]);
