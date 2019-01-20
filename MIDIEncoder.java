@@ -299,18 +299,22 @@ public class MIDIEncoder{
       String output2 = "";
       int[][] Notes = new int[length][13];
       for (int col = 0; col < length; col++){
-        Notes[col] = getNotes(col);
+        for (int row = 0; row < 13; row++){
+          Notes[row][col] = grid[row][col].getMode();
+        }
       }
       for (int col = 0; col < length; col++){
         if (col > 0) {
           output2 += "80 48 ";
           trackLen += 2;
+        }
+        else {
+          output2 += "80 00 ";
+          trackLen += 2;
           for (int row = 0; row < 13; row++){
               output2 += "91 " + grid[row][col].getVal() + "00 ";
               trackLen += 3;
             }
-        }
-        else {
           output2 += "80 00 ";
           trackLen += 2;
         }
