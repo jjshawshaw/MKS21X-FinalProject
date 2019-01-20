@@ -82,7 +82,7 @@ We were both quite sick so no work was done on this day.
 
 01.17.19
 - modified toHex method to make it easier to convert to bytes
-- wrote algortihm to convert hex code to bytes
+- wrote algorithm to convert hex code to bytes
 
 01.18.19
 
