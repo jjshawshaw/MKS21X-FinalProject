@@ -1,5 +1,5 @@
 # MKS21X-FinalProject
-We will be creating a simple java terminal-based MIDI encoder.
+We will be creating a simple java terminal-based MIDI encoder. Using our encoder you will be able to draw in simple notes and have them written to a .mid file whichyou cna then play using a MIDI player.
 
 ## Instructions:
 To compile the program, type:
@@ -91,3 +91,7 @@ We were both quite sick so no work was done on this day.
 - got the code to output to a .mid file :)))
 - wrote several sample files
 - attempted to improve the toHex algorithm but alas, have given up
+
+01.20.19
+
+01.21.19
