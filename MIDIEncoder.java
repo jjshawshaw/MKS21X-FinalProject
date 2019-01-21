@@ -226,7 +226,7 @@ public class MIDIEncoder{
 
 
 
-      s.putString(currentx,currenty,"▯",Terminal.Color.WHITE, Terminal.Color.BLACK, ScreenCharacterStyle.Bold);
+      s.putString(currentx,currenty,"▯",Terminal.Color.WHITE, Terminal.Color.BLACK, ScreenCharacterStyle.Blinking);
 
 
 
