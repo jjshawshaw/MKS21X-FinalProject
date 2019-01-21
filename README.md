@@ -1,5 +1,5 @@
 # MKS21X-FinalProject
-We will be creating a simple java terminal-based MIDI encoder. Using our encoder you will be able to draw in simple notes and have them written to a .mid file whichyou cna then play using a MIDI player.
+We will be creating a simple java terminal-based MIDI encoder. Using our encoder you will be able to draw in simple notes and have them written to a .mid file which you can then play using a MIDI player.
 
 ## Instructions:
 To compile the program, type:
@@ -38,21 +38,21 @@ We were both quite sick so no work was done on this day.
 01.07.19
 - wrote methods that convert notes to MIDI Raw Hex code
 - wrote methods for calculating tracklength and formatting in correct MIDI format
-- the program can now output hex code that represents MIDI 
+- the program can now output hex code that represents MIDI
 
 01.08.19
 - today we began implementing lanterna and modifying the methods within the demo file to understand how the library works
 
-01.09.19 
+01.09.19
 - began testing on a tester file attempting to develop the visual grid independently of the encoder class and eventually implemented it into our MIDIEncoder class
 - the cursor's coordinates are tracked and the user can urn a note on/off visually
 
 01.10.19
 - integrated the lanterna code from the demo file into the MIDIEncoder file
-- edited the way the grid and cursor looks in the terminal 
+- edited the way the grid and cursor looks in the terminal
 - notes can be changed colour in response to keyboard clicks
 - edited the way the keyboard looks on the terminal
-- wrote the back-end add and remove note methods 
+- wrote the back-end add and remove note methods
 - fixed the toHex method
 
 01.11.19
@@ -73,11 +73,11 @@ We were both quite sick so no work was done on this day.
 - worked on implementing screen to stop flickering but it broke everything
 
 01.15.19
-- attempting to fix the way the addnote method works 
+- attempting to fix the way the addnote method works
 - worked on implementing screen to stop flickering but it broke everything
 
 01.16.19
-- attempting to fix the way the addnote method works 
+- attempting to fix the way the addnote method works
 - made the program display a grid
 
 01.17.19
@@ -93,5 +93,7 @@ We were both quite sick so no work was done on this day.
 - attempted to improve the toHex algorithm but alas, have given up
 
 01.20.19
+- attempted to include an Ubuntu MIDI file player but was not able to test it due to lack of permission to install the software
+- wrote a jingle bells demo 
 
 01.21.19
