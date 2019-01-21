@@ -1,7 +1,7 @@
 # MKS21X-FinalProject
 We will be creating a simple java terminal-based MIDI encoder. Using our encoder you will be able to draw in simple notes and have them written to a .mid file which you can then play using a MIDI player.
 
-https://imgur.com/GjzXbsT
+![alt text](https://imgur.com/GjzXbsT)
 
 ## Instructions:
 To compile the program, type:
