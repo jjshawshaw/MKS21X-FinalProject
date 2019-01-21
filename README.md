@@ -1,5 +1,6 @@
 # MKS21X-FinalProject
 We will be creating a simple java terminal-based MIDI encoder. Using our encoder you will be able to draw in simple notes and have them written to a .mid file which you can then play using a MIDI player.
+
 https://imgur.com/GjzXbsT
 
 ## Instructions:
@@ -16,7 +17,7 @@ java -cp lanterna.jar:. MIDIEncoder new.mid int[1-100]
 The new.mid is a file to which your music will be written to.
 The integer deptermines the length of the grid and is 1-100 inclusive.
 
-Within the program, use arrow keys to navigate. Press the "a" key to begin a note and and press "a" to stop adding. Press "r" to remove. Esc to terminate the program. After your program is complete, the notes you drew in will be written to a file with the name you specified upon running the program.
+Within the program, use arrow keys to navigate. Press the "a" key to begin a note and and press "a" again to stop adding. Press "r" to remove. Esc to terminate the program. After your program is complete, the notes you drew in will be written to a file with the name you specified upon running the program.
 We also have two simple sample midi files twinkle.mid and jingle.mid that play tunes written using our encoder.
 
 MIDI Player:
