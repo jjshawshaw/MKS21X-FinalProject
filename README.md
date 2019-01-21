@@ -98,3 +98,4 @@ We were both quite sick so no work was done on this day.
 - wrote a jingle bells demo 
 
 01.21.19
+- implemented screen to eliminate flickering
