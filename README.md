@@ -88,7 +88,7 @@ We were both quite sick so no work was done on this day.
 - wrote algorithm to convert hex code to bytes
 
 01.18.19
-
+- spent the entire period dealing with merge conflicts and weird errors with pulling branches
 
 01.19.19
 - got the code to output to a .mid file :)))
@@ -101,3 +101,4 @@ We were both quite sick so no work was done on this day.
 
 01.21.19
 - implemented screen to eliminate flickering
+- updated user directions and README
