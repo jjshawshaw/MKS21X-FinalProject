@@ -88,7 +88,7 @@ public class MIDIEncoder{
     firstNote = true;
     while(!(complete)){
 
-      s.setCursorPosition(currentx,currenty);
+
       Key key = terminal.readInput();
       if (key != null){
         if (key.getKind() == Key.Kind.Escape) {
@@ -172,6 +172,18 @@ public class MIDIEncoder{
           //this draws a piano octave
           printPiano();
           //prints the header
+          for (int row = 0; row < 13; row++){
+            for (int col = 0; col < (length); col++){
+              if (grid[row][col].getMode() == 1) s.putString(col + 5, row + 5, "▮",Terminal.Color.GREEN,Terminal.Color.BLACK, ScreenCharacterStyle.Bold);
+              else if (grid[row][col].getMode() == 2) s.putString(col + 5, row + 5, "▮",Terminal.Color.RED,Terminal.Color.BLACK, ScreenCharacterStyle.Bold);
+              else {
+                if (!(row + 5 == currenty && col + 5 == currentx))
+                s.putString(col + 5, row + 5, "▮",Terminal.Color.WHITE,Terminal.Color.BLACK, ScreenCharacterStyle.Bold);
+                s.setCursorPosition(currentx,currenty);
+              }
+          }
+
+        }
           s.putString(29,3, "key: " + Notes[currenty-5],Terminal.Color.BLACK, Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
           printHeader();
           s.refresh();
@@ -215,17 +227,7 @@ public class MIDIEncoder{
 
 
       s.putString(currentx,currenty,"▯",Terminal.Color.WHITE, Terminal.Color.BLACK, ScreenCharacterStyle.Bold);
-    for (int row = 0; row < 13; row++){
-      for (int col = 0; col < (length); col++){
-        if (grid[row][col].getMode() == 1) s.putString(col + 5, row + 5, "▮",Terminal.Color.GREEN,Terminal.Color.BLACK, ScreenCharacterStyle.Bold);
-        else if (grid[row][col].getMode() == 2) s.putString(col + 5, row + 5, "▮",Terminal.Color.RED,Terminal.Color.BLACK, ScreenCharacterStyle.Bold);
-        else {
-          if (!(row + 5 == currenty && col + 5 == currentx))
-          s.putString(col + 5, row + 5, "▮",Terminal.Color.WHITE,Terminal.Color.BLACK, ScreenCharacterStyle.Bold);
-        }
-    }
 
-  }
 
 
   }
