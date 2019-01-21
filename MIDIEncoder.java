@@ -203,7 +203,7 @@ public class MIDIEncoder{
 
   public void printHeader(){
     s.putString(0,0, "to add a note, press 'a' to start and drag. to stop press 'a' again.",Terminal.Color.WHITE,Terminal.Color.RED, ScreenCharacterStyle.Bold);
-    s.putString(0,1, "to remove a note, press 'r'              once you are done entering your notes, press esc",Terminal.Color.WHITE,Terminal.Color.RED, ScreenCharacterStyle.Bold);
+    s.putString(0,1, "to remove a note, press 'r'  once you are done entering your notes, press esc",Terminal.Color.WHITE,Terminal.Color.RED, ScreenCharacterStyle.Bold);
 
     //tracks the cursor location
     s.putString(1,3, "currentx: "+ currentx,Terminal.Color.BLACK, Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
@@ -250,7 +250,7 @@ public class MIDIEncoder{
     s.putString(0,16, "C#",Terminal.Color.WHITE,Terminal.Color.BLACK,ScreenCharacterStyle.Bold);
     s.putString(2,16, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
     s.putString(0,17, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
-    s.refresh();
+    //s.refresh();
 }
 
   //taken from Mr.K's demo
