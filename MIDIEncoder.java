@@ -11,6 +11,8 @@ import com.googlecode.lanterna.input.InputDecoder;
 import com.googlecode.lanterna.input.InputProvider;
 import com.googlecode.lanterna.input.Key;
 import com.googlecode.lanterna.input.KeyMappingProfile;
+import com.googlecode.lanterna.screen.Screen;
+import com.googlecode.lanterna.screen.ScreenCharacterStyle;
 import java.io.*;
 import java.util.*;
 import java.lang.IndexOutOfBoundsException;
@@ -33,6 +35,8 @@ public class MIDIEncoder{
   private boolean adding;
   //new terminal object
   private Terminal terminal;
+
+  private Screen s;
 
   private boolean hasLoaded;
 
@@ -75,40 +79,51 @@ public class MIDIEncoder{
     terminal.enterPrivateMode();
     TerminalSize size = terminal.getTerminalSize();
     terminal.setCursorVisible(false);
+    s = new Screen(terminal);
+    s.startScreen();
+    //
     hasLoaded = false;
     mode = 0;
     adding = false;
     firstNote = true;
     while(!(complete)){
+
+      s.setCursorPosition(currentx,currenty);
       Key key = terminal.readInput();
       if (key != null){
         if (key.getKind() == Key.Kind.Escape) {
                 //terminal.setCursorVisible(false);
                 terminal.exitPrivateMode();
+                s.clear();
+                s.stopScreen();
                 //System.out.println(toHex());
                 getFile();
                 complete = true;
         }
         if (key.getKind() == Key.Kind.ArrowUp){
                 if (currenty > 5 && !adding)  currenty--;
-                terminal.clearScreen();
+                //terminal.clearScreen();
                 hasLoaded = false;
+                s.refresh();
         }
         if (key.getKind() == Key.Kind.ArrowDown){
                 if (currenty < 17 && !adding) currenty++;
-                terminal.clearScreen();
+                //terminal.clearScreen();
                 hasLoaded = false;
+                s.refresh();
         }
         if (key.getKind() == Key.Kind.ArrowRight){
                 if (currentx < (length +4)) currentx++;
-                terminal.clearScreen();
+                //terminal.clearScreen();
                 hasLoaded = false;
+                s.refresh();
 
         }
         if (key.getKind() == Key.Kind.ArrowLeft){
                 if (currentx > 5  && !adding) currentx--;
-                terminal.clearScreen();
+                //terminal.clearScreen();
                 hasLoaded = false;
+                s.refresh();
         }
         if (key.getCharacter() == 'r'){
           removeNote();
@@ -157,8 +172,9 @@ public class MIDIEncoder{
           //this draws a piano octave
           printPiano();
           //prints the header
-          putString(29,3,terminal, "key: " + Notes[currenty-5],Terminal.Color.BLACK, Terminal.Color.WHITE,Terminal.Color.RED);
+          s.putString(29,3, "key: " + Notes[currenty-5],Terminal.Color.BLACK, Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
           printHeader();
+          s.refresh();
 
             }
 
@@ -186,52 +202,55 @@ public class MIDIEncoder{
   }
 
   public void printHeader(){
-    putString(0,0,terminal, "to add a note, press 'a' to start and drag. to stop press 'a' again.",Terminal.Color.WHITE,Terminal.Color.RED,Terminal.Color.RED);
-    putString(0,1,terminal, "to remove a note, press 'r'              once you are done entering your notes, press esc",Terminal.Color.WHITE,Terminal.Color.RED,Terminal.Color.RED);
+    s.putString(0,0, "to add a note, press 'a' to start and drag. to stop press 'a' again.",Terminal.Color.WHITE,Terminal.Color.RED, ScreenCharacterStyle.Bold);
+    s.putString(0,1, "to remove a note, press 'r'              once you are done entering your notes, press esc",Terminal.Color.WHITE,Terminal.Color.RED, ScreenCharacterStyle.Bold);
 
     //tracks the cursor location
-    putString(1,3,terminal, "currentx: "+ currentx,Terminal.Color.BLACK, Terminal.Color.WHITE,Terminal.Color.RED);
-    putString(15,3,terminal, "currenty: "+ currenty,Terminal.Color.BLACK, Terminal.Color.WHITE,Terminal.Color.RED);
+    s.putString(1,3, "currentx: "+ currentx,Terminal.Color.BLACK, Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
+    s.putString(15,3, "currenty: "+ currenty,Terminal.Color.BLACK, Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
 
     //keeps track of mode and key user is on
-    putString(38,3,terminal, "mode: " + currentTile().getMode(),Terminal.Color.BLACK, Terminal.Color.WHITE,Terminal.Color.RED);
+    s.putString(38,3, "mode: " + currentTile().getMode(),Terminal.Color.BLACK, Terminal.Color.WHITE, ScreenCharacterStyle.Bold);
 
 
 
-      putString(currentx,currenty,terminal,"▯",Terminal.Color.WHITE, Terminal.Color.BLACK, Terminal.Color.GREEN);
+      s.putString(currentx,currenty,"▯",Terminal.Color.WHITE, Terminal.Color.BLACK, ScreenCharacterStyle.Bold);
     for (int row = 0; row < 13; row++){
       for (int col = 0; col < (length); col++){
-        if (grid[row][col].getMode() == 1) putString(col + 5, row + 5,terminal, "▮",Terminal.Color.GREEN,Terminal.Color.BLACK,Terminal.Color.RED);
-        else if (grid[row][col].getMode() == 2) putString(col + 5, row + 5,terminal, "▮",Terminal.Color.RED,Terminal.Color.BLACK,Terminal.Color.RED);
+        if (grid[row][col].getMode() == 1) s.putString(col + 5, row + 5, "▮",Terminal.Color.GREEN,Terminal.Color.BLACK, ScreenCharacterStyle.Bold);
+        else if (grid[row][col].getMode() == 2) s.putString(col + 5, row + 5, "▮",Terminal.Color.RED,Terminal.Color.BLACK, ScreenCharacterStyle.Bold);
         else {
           if (!(row + 5 == currenty && col + 5 == currentx))
-          putString(col + 5, row + 5,terminal, "▮",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
+          s.putString(col + 5, row + 5, "▮",Terminal.Color.WHITE,Terminal.Color.BLACK, ScreenCharacterStyle.Bold);
         }
     }
+
   }
 
 
   }
+
 
   private void printPiano(){
-    putString(0,5,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-    putString(0,6,terminal, "B   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-    putString(0,7,terminal, "A#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-    putString(2,7,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-    putString(0,8,terminal, "A   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-    putString(0,9,terminal, "G#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-    putString(2,9,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-    putString(0,10,terminal, "G   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-    putString(0,11,terminal, "F#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-    putString(2,11,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-    putString(0,12,terminal, "F   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-    putString(0,13,terminal, "E   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-    putString(0,14,terminal, "D#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-    putString(2,14,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-    putString(0,15,terminal, "D   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
-    putString(0,16,terminal, "C#",Terminal.Color.WHITE,Terminal.Color.BLACK,Terminal.Color.RED);
-    putString(2,16,terminal, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,Terminal.Color.RED);
-    putString(0,17,terminal, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,Terminal.Color.RED);
+    s.putString(0,5, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
+    s.putString(0,6, "B   ",Terminal.Color.BLACK,Terminal.Color.WHITE, ScreenCharacterStyle.Bold);
+    s.putString(0,7, "A#",Terminal.Color.WHITE,Terminal.Color.BLACK,ScreenCharacterStyle.Bold);
+    s.putString(2,7, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
+    s.putString(0,8, "A   ",Terminal.Color.BLACK,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
+    s.putString(0,9, "G#",Terminal.Color.WHITE,Terminal.Color.BLACK,ScreenCharacterStyle.Bold);
+    s.putString(2,9, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
+    s.putString(0,10, "G   ",Terminal.Color.BLACK,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
+    s.putString(0,11, "F#",Terminal.Color.WHITE,Terminal.Color.BLACK,ScreenCharacterStyle.Bold);
+    s.putString(2,11, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
+    s.putString(0,12, "F   ",Terminal.Color.BLACK,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
+    s.putString(0,13, "E   ",Terminal.Color.BLACK,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
+    s.putString(0,14, "D#",Terminal.Color.WHITE,Terminal.Color.BLACK,ScreenCharacterStyle.Bold);
+    s.putString(2,14, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
+    s.putString(0,15, "D   ",Terminal.Color.BLACK,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
+    s.putString(0,16, "C#",Terminal.Color.WHITE,Terminal.Color.BLACK,ScreenCharacterStyle.Bold);
+    s.putString(2,16, "  ",Terminal.Color.WHITE,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
+    s.putString(0,17, "C   ",Terminal.Color.BLACK,Terminal.Color.WHITE,ScreenCharacterStyle.Bold);
+    s.refresh();
 }
 
   //taken from Mr.K's demo
